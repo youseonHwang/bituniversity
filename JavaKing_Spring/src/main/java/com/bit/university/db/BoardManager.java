@@ -23,7 +23,7 @@ public class BoardManager {
 			InputStream inputStream = Resources.getResourceAsStream(resource);
 			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
 		} catch (Exception e) {
-			System.out.print("¿¹¿Ü¹ß»ý:" + e.getMessage());
+			System.out.print("ï¿½ï¿½ï¿½Ü¹ß»ï¿½:" + e.getMessage());
 		}
 	}
 
@@ -90,6 +90,7 @@ public class BoardManager {
 		session.close();
 		return n;
 	}
+	
 	
 	public static int getNextNo() {
 		int n = 0;
