@@ -4,10 +4,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+
 <title>:: 비트대학교 ::</title>
-<!-- Required Meta Tags Always Come First -->
-<meta charset="utf-8">
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <!-- Favicon -->
   <link rel="shortcut icon" href="../image/favicon.ico">
@@ -25,8 +24,20 @@
   <!-- CSS Space Template -->
   <link rel="stylesheet" href="../../assets/css/theme.css">
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script type="text/javascript">   
+ <!-- jquery  -->
+  <script type="text/javascript" src = "https://code.jquery.com/jquery-3.5.1.min.js"></script>  
+
+  <!-- JS Global Compulsory -->
+  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
+  
+  <!-- bootbox code -->
+  <script src="../bootbox/bootbox.min.js"></script>
+  <script src="../bootbox/bootbox.locales.min.js"></script>
+  
+  <script type="text/javascript">  
 	$(function(){
 		var csrf_token = "{{ csrf_token() }}";
     	
@@ -38,12 +49,14 @@
             }
         });
 		var board_boardno = $("#board_boardno").val();
-		
+
+		// 파일 선택하면 파일 라벨에 파일 이름 들어가는 부분-------------------------------------------------------
 		$(".custom-file-input").on("change", function() {
 		  var fileName = $(this).val().split("\\").pop();
 		  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 		});
-		
+
+		// 등록 버튼을 눌렀을 때 실행하는 동작----------------------------------------------------------------
 		$('#btn_update').click(function() {
 			var form_data = new FormData($('#update_form')[0])		
 			alert(form_data)
@@ -54,14 +67,28 @@
 			    processData: false,
 			    contentType: false,
 				success:function(res){
-					if(res != 1) {
-						setTimeout(function() {
-							alert('게시물 등록에 실패하였습니다.')
-							alert(res)
-						}, 1000)
-					} else{
-						window.location.href="/login/listBoard.do?board_boardno="+board_boardno
-					}
+					if(res == 1) {//수정 성공시
+						   var board_category = $("#board_category option:selected").val();
+	                 	   var dialog = bootbox.dialog({
+		                    	title: '수정',
+		                    	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+	                 		   	buttons: {ok: function () {location.href="/login/listBoard.do?board_boardno="+board_boardno+"&board_category=" +board_category}
+	                 		   	}});
+	                 		            
+	                 		dialog.init(function(){
+	                 		    setTimeout(function(){dialog.find('.bootbox-body').html('수정 완료!');},2000); 
+	                    		})
+	                    }
+	                    else{//수정 실패시
+	                 	   var dialog = bootbox.dialog({
+	                 		    title: '수정',
+	                 		    message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',	                    		  
+	                 		});
+	                 		            
+	                 		dialog.init(function(){
+	                 		    setTimeout(function(){ dialog.find('.bootbox-body').html('수정 실패!');}, 2000);
+	                 		});
+	                   }
 			}})
 		})
 	})
@@ -105,30 +132,56 @@
             <!-- Product -->
             <div class="media mb-4">
               <div class="d-flex position-relative mr-3">
-                <img class="u-lg-avatar rounded" src="../../assets/img/100x100/img5.jpg" alt="Image Description">
+                <img class="u-lg-avatar rounded" src="../image/university_insert.jpg" alt="Image Description">
               </div>
               <div class="media-body">
-                <h4 class="h6 mb-0">어쩌고</h4>
-                <small class="d-block text-secondary"> 198 West 21th Street, Suite 721 New York NY 10016</small>
-                <small class="d-block text-secondary"> + 1235 2355 98</small>
-                <small class="d-block text-secondary">  info@yoursite.com </small>
+                <h4 class="h6 mb-0">비트 대학교</h4>
+                <small class="d-block text-secondary"> 서울특별시 마포구 백범로 23 구프라자 B1</small>
+                <small class="d-block text-secondary"> +02-707-1480</small>
+                <small class="d-block text-secondary"> bituniversityemail@gmail.com </small>
               </div>
             </div>
             <!-- End Product -->
 
             <hr class="my-4">
-
+			<!-- Video Block -->
+			<div id="youTubeVideoPlayer" class="u-video-player">
+			  <!-- Cover Image -->
+			  <img class="img-fluid u-video-player__preview" src="../assets/img/img41-lg.jpg" alt="Image" >
+			  <!-- End Cover Image -->
+			
+			  <!-- Play Button -->
+			  <a class="js-inline-video-player u-video-player__btn u-video-player__centered" href="https://youtu.be/5nqUaVh11XI"
+			     data-parent="youTubeVideoPlayer"
+			     data-target="youTubeVideoIframe"
+			     data-classes="u-video-player__played">
+			    <span class="u-video-player__icon">
+			      <span class="fa fa-play u-video-player__icon-inner"></span>
+			    </span>
+			  </a>
+			  <!-- End Play Button -->
+			
+			  <!-- Video Iframe -->
+			  <div class="embed-responsive embed-responsive-16by9">
+			    <iframe id="youTubeVideoIframe" class="embed-responsive-item" src="https://www.youtube.com/embed/5nqUaVh11XI"></iframe>
+			  </div>
+			  <!-- End Video Iframe -->
+			</div>
+			<!-- End Video Block -->
+			
+			<hr class="my-4">
+				
             <!-- Title -->
             <div class="mb-3">
               <h4 class="h6 mb-0">오시는 길</h4>
-              <small class="text-secondary">오시는 길 연결</small>
+              <a href="/login/map.do"><small class="text-secondary">클릭하면 오시는 길로 연결됩니다.</small></a>
             </div>
             <!-- End Title -->
 
             <!-- Title -->
             <div class="mb-3">
               <h4 class="h6 mb-0">스터디 찾기</h4>
-              <small class="text-secondary">스터디 뷰 연결</small>
+              <a href="/login/listStudy.do"><small class="text-secondary">클릭하면 스터디로 연결됩니다.</small></a>
             </div>
             <!-- End Title -->
 
@@ -140,7 +193,7 @@
         <div class="col-lg-8 order-lg-1">
           <!-- insert Form -->
           <form class="js-validate js-step-form pr-lg-4"data-progress-id="#stepFormProgress"
-                data-steps-id="#stepFormContent"novalidate="novalidate" id="update_form">
+                data-steps-id="#stepFormContent"novalidate="novalidate" id="update_form" enctype="multipart/form-data">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token }">
             <!-- Form Content -->
             <div id="stepFormContent">
@@ -187,7 +240,7 @@
                       </label>
 
                       <div class="js-focus-state input-group form">
-                        <input class="form-control form__input" type="text"" name="board_title" id="board_title" required
+                        <input class="form-control form__input" type="text"" name="board_title" id="board_title" value="${b_vo.board_title}" required
                                placeholder="${b_vo.board_title}"
                                data-msg="글 제목을 입력하세요"
                                data-error-class="u-has-error"
@@ -258,7 +311,7 @@
                       <div class="custom-file">
                       	<input type="hidden" id="board_fname" name="board_fname" value="${b_vo.board_fname}">
                         <input type="file" class="custom-file-input" id="upload_file" name="upload_file">
-                        <label class="custom-file-label" for="customFile"> 파일을 선택하세요 </label>
+                        <label class="custom-file-label" for="customFile"> 현재파일: ${b_vo.board_fname} /파일을 선택하세요 </label>
                       </div>
                     </div>
                     <!-- End Input -->
@@ -464,12 +517,6 @@
   </a>
   <!-- End Go to Top -->
 
-  <!-- JS Global Compulsory -->
-  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
-  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
-  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
-  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
-
   <!-- JS Implementing Plugins -->
   <script src="../../assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>
   <script src="../../assets/vendor/jquery-validation/dist/jquery.validate.min.js"></script>
@@ -477,6 +524,7 @@
   <script src="../../assets/vendor/custombox/dist/custombox.min.js"></script>
   <script src="../../assets/vendor/custombox/dist/custombox.legacy.min.js"></script>
   <script src="../../assets/vendor/instafeed.js/instafeed.min.js"></script>
+  <script src="../../assets/vendor/player.js/dist/player.min.js"></script>
 
   <!-- JS Space -->
   <script src="../../assets/js/hs.core.js"></script>
@@ -489,7 +537,8 @@
   <script src="../../assets/js/components/hs.show-animation.js"></script>
   <script src="../../assets/js/components/hs.instagram.js"></script>
   <script src="../../assets/js/components/hs.go-to.js"></script>
-
+  <script src="../../assets/js/components/hs.video-player.js"></script>
+  
   <!-- JS Plugins Init. -->
   <script>
     $(window).on('load', function () {
@@ -513,7 +562,10 @@
             $(this).find('input[type="search"]').focus();
           }
         }
+      // initialization of video player
+	    $.HSCore.components.HSVideoPlayer.init('.js-inline-video-player');
       });
+
 
       // initialization of form validation
       $.HSCore.components.HSValidation.init('.js-validate', {

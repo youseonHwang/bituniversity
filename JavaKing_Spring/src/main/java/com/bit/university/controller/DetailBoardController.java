@@ -1,6 +1,8 @@
 package com.bit.university.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -47,8 +49,9 @@ public class DetailBoardController {
 		int std_no = (int) session.getAttribute("std_no");
 			
 		/**************************************************************/
+		
 		// 조회수 증가
-		b_dao.increaseHit(board_no);
+		int hit_re = b_dao.increaseHit(board_no);
 		
 		// 게시글 번호에 해당하는 게시글 정보 가져오기
 		BoardVo b_vo = b_dao.getBoard(board_no);
@@ -65,16 +68,23 @@ public class DetailBoardController {
 		}
 		
 		/**************************************************************/
-
-
-
 		
-		//제이슨 형태로 view에 보내줄 데이터들 모두 map_all에 담기
+		// 다음글, 이전글 번호 생성하기
+		List<HashMap<String, Integer>> for_board_no_list =  b_dao.getNextOrBeforeNo(board_no);
+		HashMap<String, Integer> for_b_map = new HashMap<String, Integer>();
+		for_b_map = for_board_no_list.get(0);
+		
+		int next_board_no = Integer.parseInt(String.valueOf(for_b_map.get("NEXT_BOARD_NO")+""));
+		int before_board_no = Integer.parseInt(String.valueOf(for_b_map.get("BEFORE_BOARD_NO")+""));
+		/**************************************************************/
+		// 제이슨 형태로 view에 보내줄 데이터들 모두 map_all에 담기
 		map_all.put("std_no", std_no);
 		map_all.put("board_boardname", board_boardname);
 		map_all.put("reply_count", r_dao.getTotalReply(board_no));
 		map_all.put("b_vo", b_vo);
 		map_all.put("r_list", r_dao.listReply(board_no));
+		map_all.put("next_board_no", next_board_no);
+		map_all.put("before_board_no", before_board_no);
 		
 		return map_all;
 	}

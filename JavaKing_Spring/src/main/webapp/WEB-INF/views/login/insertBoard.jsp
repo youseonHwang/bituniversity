@@ -24,7 +24,19 @@
   <!-- CSS Space Template -->
   <link rel="stylesheet" href="../../assets/css/theme.css">
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+ <!-- jquery  -->
+  <script type="text/javascript" src = "https://code.jquery.com/jquery-3.5.1.min.js"></script>  
+
+  <!-- JS Global Compulsory -->
+  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
+  
+  <!-- bootbox code -->
+  <script src="../bootbox/bootbox.min.js"></script>
+  <script src="../bootbox/bootbox.locales.min.js"></script>
+  
   <script type="text/javascript">   
 	$(function(){
 		var csrf_token = "{{ csrf_token() }}";
@@ -36,15 +48,17 @@
                 }
             }
         });
+
+        // 파일 선택하면 파일 라벨에 파일 이름 들어가는 부분-------------------------------------------------------
 		$(".custom-file-input").on("change", function() {
 		  var fileName = $(this).val().split("\\").pop();
 		  $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
 		});
-		
+
+		// 등록 버튼을 눌렀을 때 실행하는 동작----------------------------------------------------------------
 		$('#btn_insert').click(function() {
 			var form_data = new FormData($('#insert_form')[0])
 			
-			alert(form_data)
 			$.ajax({
 				url: "/login/insertBoard",
 				type:'POST',
@@ -52,13 +66,29 @@
 			    processData: false,
 			    contentType: false,
 				success:function(res){
-					if(res != 1) {
-						setTimeout(function() {
-							alert('게시물 등록에 실패하였습니다.')	
-						}, 1000)
-					} else{
-						window.location.href="/login/listBoard.do"
-					}
+					if(res == 1) {//등록 성공시
+					   var board_category = $("#board_category option:selected").val();
+                 	   var dialog = bootbox.dialog({
+	                    	title: '등록',
+	                    	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+                 		   	buttons: {ok: function () {location.href="/login/listBoard.do?board_boardno="+${board_boardno}+"&board_category="+board_category}}
+            		    	});
+                 		            
+                 		dialog.init(function(){
+                 		    setTimeout(function(){dialog.find('.bootbox-body').html('등록 완료!');},2000); 
+                    		})
+                    }
+                    else{//등록 실패시
+                 	   var dialog = bootbox.dialog({
+                 		    title: '등록',
+                 		    message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',	                    		  
+                 		});
+                 		            
+                 		dialog.init(function(){
+                 		    setTimeout(function(){ dialog.find('.bootbox-body').html('등록 실패!');}, 2000);
+                 		});
+                   }
+
 			}})
 		})
 	})
@@ -103,7 +133,7 @@
             <!-- Product -->
             <div class="media mb-4">
               <div class="d-flex position-relative mr-3">
-                <img class="u-lg-avatar rounded" src="../image/college.jpg" alt="Image Description">
+                <img class="u-lg-avatar rounded" src="../image/university_insert.jpg" alt="Image Description">
               </div>
               <div class="media-body">
                 <h4 class="h6 mb-0">비트 대학교</h4>
@@ -205,7 +235,7 @@
 
                     <div class="js-form-message mb-6">
                       <label class="h6 small d-block text-uppercase">
-                        제목
+                        	제목
                         <span class="text-danger">*</span>
                       </label>
 
@@ -223,7 +253,7 @@
                     <!-- Input -->
                     <div class="js-form-message mb-6">
                       <label class="h6 small d-block text-uppercase">
-                        비밀번호
+                      	  비밀번호
                         <span class="text-danger">*</span>
                       </label>
 
@@ -263,7 +293,7 @@
                     <!-- Input -->
                     <div class="js-form-message mb-6">
                       <label class="h6 small d-block text-uppercase">
-                        내용
+                      	  내용
                         <span class="text-danger">*</span>
                       </label>
 
@@ -309,11 +339,6 @@
 
                 <!-- End Title -->
 
-
-
-
-              
-           
           
           <!-- End Checkout Form -->
         </div>
@@ -323,6 +348,7 @@
   </main>
   <!-- ========== END MAIN CONTENT ========== -->
   </div>
+  
 <jsp:include page="../footer.jsp"/>
   <!-- Go to Top -->
   <a class="js-go-to u-go-to" href="javascript:;"
@@ -336,11 +362,6 @@
   </a>
   <!-- End Go to Top -->
 
-  <!-- JS Global Compulsory -->
-  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
-  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
-  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
-  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
 
   <!-- JS Implementing Plugins -->
   <script src="../../assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>

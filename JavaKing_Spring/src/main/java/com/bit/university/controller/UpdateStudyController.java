@@ -26,12 +26,12 @@ public class UpdateStudyController {
 	@GetMapping("/login/updateStudy.do")
 	public ModelAndView updateStudyView(HttpServletRequest request) throws Throwable {
 		ModelAndView mav = new ModelAndView();
-	
+		
+	    System.out.println("updateStudyController 입장");
+	    
 		int study_no = Integer.parseInt(request.getParameter("study_no"));
 		
-		//������ �� ��ȣ�� board vo ����
 		StudyVo s_vo = s_dao.getOneStudy(study_no);
-		
 		
 		String lat_lng_area = s_vo.getStudy_area();
 		System.out.println(lat_lng_area);
@@ -59,10 +59,8 @@ public class UpdateStudyController {
 		System.out.println(path);
 		
 		String old_fname = s_vo.getStudy_fname();
-		System.out.println("������ ���� 0000");
 		String fname = (s_vo.getUpload_file()).getOriginalFilename();
 		String study_fname = fname.substring(fname.lastIndexOf("\\")+1);
-		System.out.println("������ ���� 1111");
 		 if(study_fname != null && !study_fname.equals("")) {
 	         try {
 	            byte[] data = (s_vo.getUpload_file()).getBytes();
@@ -77,7 +75,6 @@ public class UpdateStudyController {
 	    	  s_vo.setStudy_fname(old_fname);
 	      }
 		 
-		 System.out.println("������ ���� 2222");
 		 
 		 System.out.println(s_vo);
 		 

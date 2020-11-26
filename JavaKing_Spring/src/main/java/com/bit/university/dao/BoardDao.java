@@ -19,8 +19,8 @@ public class BoardDao {
 		return BoardManager.deleteBoard(board_no);
 	}
 	
-	public void increaseHit(int board_no) {
-		
+	public int increaseHit(int board_no) {
+		return BoardManager.increaseHit(board_no);
 	}
 	
 	public BoardVo getBoard(int board_no) {
@@ -46,5 +46,9 @@ public class BoardDao {
 	public int insertBoard(BoardVo b_vo) {
 		System.out.println("dao.boardcategory::::::::" +b_vo.getBoard_category());
 		return BoardManager.insertBoard(b_vo);
+	}
+	
+	public List<HashMap<String, Integer>> getNextOrBeforeNo(int board_no) {
+		return BoardManager.getNextOrBeforeNo(board_no);
 	}
 }

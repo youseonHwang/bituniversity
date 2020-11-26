@@ -190,12 +190,15 @@
 		                  var row = $('<div class="row justify-content-center"></div>');
 		                  var modal_image;
 		                     if(item.study_fname !=null) { //파일이 있으면
-		                        modal_image= $('<img class="img-thumbnail mb-2" src="../webapp/image/'+item.fname+'" alt="Responsive image" width="60%" height="60%"/>')
+		                        modal_image= $('<img class="img-thumbnail mb-2" src="../image/'+item.study_fname+'" alt="Responsive image" width="180px" height="180px"/>')
 		                     } else {
 		                        modal_image= $('<img class="img-thumbnail mb-2" src="../../image/study.jpg" alt="Responsive image" width="60%" height="60%"/>')
 		                     }
 		                     var w = $('<div class="w-100"></div>');
-		                     var modal_body_content = $('<p></p>').html(item.study_content);
+		                     var str = item.study_content;
+		                     console.log(str);
+		                     var modal_body_content = $('<p></p>').text(item.study_content);
+		                     modal_body_content.attr("style","width: 800px;");
 		                     var apply_btn = $('<a class="btn btn-block btn-primary font-weight-medium mb-3" id="apply_btn"></a>').html('스터디 신청하기');
 		                     apply_btn.attr("apply_study_no", item.study_no);
 
@@ -207,7 +210,7 @@
 		               
 		               if(std_no == item.std_no) {
 
-		                  var edit_a = $('<a id="edit_btn"></a>').attr('href', '/updateStudy.do?study_no='+item.study_no);
+		                  var edit_a = $('<a id="edit_btn"></a>').attr('href', '/login/updateStudy.do?study_no='+item.study_no);
 		                  var edit_icon = $('<button type="button" class="btn btn-xs btn-icon btn-warning"></button>').append('<i class="fas fa-highlighter"></i>');
 		                     
 		                  edit_a.append(edit_icon);

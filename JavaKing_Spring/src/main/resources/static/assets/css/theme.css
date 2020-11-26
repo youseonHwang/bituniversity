@@ -1703,6 +1703,7 @@ a.no_a_tag:hover, a.no_a_tag:focus {
 }
 
 .table {
+  text-align: center;
   width: 100%;
   margin-bottom: 1rem;
   color: #212529;
@@ -19463,7 +19464,7 @@ button:focus {
 }
 
 .tab-modern .tab-modern__nav-link:hover {
-  color: #083B90;
+  color: white;
 }
 
 .tab-modern .tab-modern__nav-link:hover .tab-modern__nav-link-icon {

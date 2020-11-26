@@ -12,7 +12,7 @@
 	</delete>
 	
 	<update id="increaseHit">
-		update board set board_hit=board_hit+1 where board_no=#{board_no}
+		update board set board_hit=NVL(board_hit, 0)+1 where board_no=#{board_no}
 	</update>
 	
 	<select id="getBoard" resultType="board_vo">
@@ -78,6 +78,17 @@
 		#{board_fname},
 		#{std_no})
 	</insert>
+	
+	<select id="getNextOrBeforeNo" parameterType="int" resultType="HashMap">
+	<![CDATA[
+		select * from (
+		select board_no,
+		lead(board_no,1) over (order by board_no) next_board_no,
+		lag(board_no,1) over (order by board_no) before_board_no
+		from board)
+		where board_no=#{board_no}
+		]]>
+	</select>
 	
 </mapper>
 

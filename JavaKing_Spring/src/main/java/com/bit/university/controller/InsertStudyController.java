@@ -37,7 +37,7 @@ public class InsertStudyController {
 		System.out.println(s_vo.getScategory_no());
 		
 		
-		//std_no(����) �ִ� �κ�
+
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("std_no") != null) {
@@ -48,11 +48,11 @@ public class InsertStudyController {
 		s_vo.setStd_no(std_no);
 		
 		
-		//���� ���͵� �� ��ȣ�� ��ȯ�ϴ� ���� s_vo�� �Ʊ�
+
 		int study_no = (int)(s_dao.getNextStudyNo());
 		s_vo.setStudy_no(study_no);
 		
-		//�޾ƿ� uploadFile ����ó�� ����..
+
 		String path = request.getRealPath("image");
 		
 		String study_fname ="";

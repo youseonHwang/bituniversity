@@ -56,8 +56,10 @@
 	$(function() {
 
 		var board_no = '<c:out value="${board_no}"/>';
-		
 		var csrf_token = "{{ csrf_token() }}";
+
+		var next_board_no=0;
+		var before_board_no=0;
     	
     	$.ajaxSetup({
             beforeSend: function(xhr, settings) {
@@ -79,10 +81,10 @@
 			$('.btn-group').empty();
 			var data = {board_no : board_no}
 			$.ajax({url:"/login/detailBoard", data:data, success:function(res){
+				next_board_no = res.next_board_no;
+				before_board_no = res.before_board_no;
 				var std_no = res.std_no;
-
 				var b_vo_std_no;
-				
 				var b_vo_list = res.b_vo;
 				var reply_list = res.r_list;
 
@@ -90,26 +92,32 @@
 				
 				$.each(b_vo_list, function(row, item){
 					b_vo_std_no = b_vo_list.std_no
-					$('#board_no').html(b_vo_list.board_no)
-					$('#std_no').html(b_vo_list.std_no)
+					$('#board_no').html(b_vo_list.board_no);
+					
+					// 익명게시판일 경우 작성자(학번) 나오지 않게 하기
+					
+					if(b_vo_list.board_category != '익명게시판') {
+						$('#std_no').html(b_vo_list.std_no)
+					} else {
+						$('#std_no').html('익명');
+					}
+					
 					$('#board_title').html(b_vo_list.board_title)
 					$('#board_content').html(b_vo_list.board_content)
 					$('#board_hit').html(b_vo_list.board_hit)
 					$('#board_regdate').html(b_vo_list.board_regdate)
 					$('#board_fname').html(b_vo_list.board_fname)
 					$('#fname_href').attr('href','../image/'+b_vo_list.board_fname)
-		
 					
 				})
 				
-				
 				//-----------------------수정 삭제 버튼 관련---------------------------------------------
-				var before = $('<button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="이전글"></button>');
+				var before = $('<button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="이전글" id="btn_before"></button>');
 				var before_i = $('<i class="fas fa-reply"></i>');
 				before.append(before_i);
 					
 
-				var next = $('<button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="다음글"></button>');
+				var next = $('<button type="button" class="btn btn-default btn-sm" data-toggle="tooltip" data-container="body" title="다음글" id="btn_next"></button>');
 				var next_i = $('<i class="fas fa-share"></i>');
 				next.append(next_i);
 					
@@ -133,8 +141,17 @@
 				$.each(reply_list, function(row,item){
 					var media_mb4 = $('<div class="media mb-4"></div>');
 					var media_body = $('<div class="media-body"></div>');
-					var reply_no = $('<input type="hidden" name="reply_no" value="'+reply_list[row].reply_no+'">')
-					var reply_std_no = $('<h5 class="mt-0"></h5>').html(reply_list[row].std_no);
+					var reply_no = $('<input type="hidden" name="reply_no" value="'+reply_list[row].reply_no+'">');
+
+					// 익명게시판일 경우 작성자(학번) 나오지 않게 하기
+					var reply_std_no;
+					if(b_vo_list.board_category != '익명게시판') {
+						reply_std_no = $('<h5 class="mt-0"></h5>').html(reply_list[row].std_no);
+					} else {
+						reply_std_no = $('<h5 class="mt-0"></h5>').html('익명');
+					}
+					
+					
 					var reply_content = $('<p id="reply_content"></p>').html(reply_list[row].reply_content);
 					var reply_date = $('<span></span>').html(reply_list[row].reply_regdate +"&nbsp;&nbsp;&nbsp;&nbsp;");
 
@@ -242,6 +259,14 @@
 					}
 				}
 			})
+		})
+		//-------------------------이전글 다음글 관련------------------------------------
+		$(document).on('click', '#btn_next', function(){
+			window.location.href="/login/detailBoard.do?board_no="+next_board_no;
+		})
+		
+		$(document).on('click', '#btn_before', function(){
+			window.location.href="/login/detailBoard.do?board_no="+before_board_no;
 		})
 		
 		

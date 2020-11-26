@@ -28,7 +28,6 @@ public class insertBoardController {
 	private ReplyDao r_dao;
 	
 	
-	
 	@GetMapping("/login/insertBoard.do")
 	public ModelAndView insertBoardGet(HttpServletRequest request) throws Throwable {
 		int std_no = 0;
