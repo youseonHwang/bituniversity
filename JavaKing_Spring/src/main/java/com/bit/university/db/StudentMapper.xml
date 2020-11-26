@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="student">
+  
+   <select id="getStudent" resultType="student_vo">
+    select
+	    STD_NO,
+		STD_EMAIL,
+		STD_NAME,
+		STD_GENDER,
+		STD_BIRTHDAY,
+		STD_LEVEL,
+		STD_SEMESTER,
+		STD_STATUS,
+		STD_STARTDATE,
+		STD_ENDDATE,
+		STD_ETC,
+		PRO_NO,
+		STD_FNAME,
+		STD_MAJOR,
+    	major_name,
+    	college_name
+   	from student, major m, college c
+   	where std_no=#{std_no}
+   			and std_major= m.major_no
+   			and m.college_no= c.college_no
+  </select> 
+  
+  <insert id="insertStudent">
+  	insert into student(std_no, std_email, std_name, std_gender, std_birthday, std_level, std_semester, std_major,
+  	std_status, std_startdate, std_etc, pro_no, std_fname) 
+  	values(#{std_no}, 
+  	#{std_email},
+  	#{std_name},
+  	#{std_gender},
+  	#{std_birthday},
+  	#{std_level},
+  	#{std_semester},
+  	#{std_major},
+  	#{std_status},
+	#{std_startdate},
+  	#{std_etc},
+  	#{pro_no},
+  	#{std_fname})
+  </insert>
+  
+  
+  <update id="updateStudent">
+  	<if test="std_enddate != null">
+  	update student set std_name=#{std_name}, std_email=#{std_email}, std_gender=#{std_gender}, std_birthday=#{std_birthday},
+  	std_level=#{std_level}, std_semester=#{std_semester}, std_major=#{std_major}, std_status=#{std_status}, std_startdate=#{std_startdate},
+  	std_enddate=#{std_enddate}, std_etc=#{std_etc}, pro_no=#{pro_no}, std_fname=#{std_fname} where std_no=#{std_no}
+  	</if>
+  	
+  	<if test="std_enddate == null">
+  	update student set std_name=#{std_name}, std_email=#{std_email}, std_gender=#{std_gender}, std_birthday=#{std_birthday},
+  	std_level=#{std_level}, std_semester=#{std_semester}, std_major=#{std_major}, std_status=#{std_status}, std_startdate=#{std_startdate},
+  	 std_enddate=null,std_etc=#{std_etc}, pro_no=#{pro_no}, std_fname=#{std_fname} where std_no=#{std_no}
+  	 </if>
+  </update>
+</mapper>

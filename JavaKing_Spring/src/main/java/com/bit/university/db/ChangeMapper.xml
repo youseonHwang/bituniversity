@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="change"> 
+  <select id="getChange" resultType="change_vo">
+  	select * from change where std_no=#{std_no}
+  </select>
+  
+  <insert id="insert">
+  	insert into change values(#{change_no}, #{change_year}, #{change_semester}, #{change_level}, #{change_sub}, sysdate,
+  	#{std_no})
+  </insert>
+  
+  <select id="nextNum" resultType="java.lang.Integer">
+  	select max(change_no)+1 from change 
+  </select>
+  
+</mapper>

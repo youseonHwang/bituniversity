@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="study">
+	<select id="findAllStudy" resultType="study_vo">
+		<![CDATA[
+		 select rn, study_no,
+				s.scategory_no, sc.scategory_name, study_title,
+				study_explain1, study_explain2, study_explain3,
+				study_content, study_regdate, study_person, study_limit,
+				study_fname, std_no, study_apply1, study_apply2,
+				study_apply4, study_apply5, study_area 
+		 from (select rownum rn,
+			    study_no, scategory_no,   
+				study_title, study_explain1, study_explain2, study_explain3,
+				study_content, study_regdate, study_person, study_limit, study_fname,
+				std_no, study_apply1, study_apply2, study_apply4, study_apply5, study_area 
+				from (select * from study ]]>
+				
+					 <!-- 검색어 지역 카테고리넘버 다 있는 경우 -->
+					<if test="!search.equals('') and search!=null and area!=null and !area.equals('') and scategory_no lte 0">
+				      where study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%' 
+				      and study_area like '%'||'${area}'||'%' and scategory_no = #{scategory_no}
+				     </if>
+				     <!-- 검색어만 있는 경우 -->
+				      <if test="!search.equals('') and search!=null and area.equals('') and scategory_no lte 0"> 
+				      	where study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%'    
+				      </if>
+				      <!-- 지역만 있는 경우 -->
+				      <if test="area!=null and !area.equals('') and search.equals('') and scategory_no lte 0"> 
+				      	where study_area like '%'||'${area}'||'%'    
+				      </if>
+				      <!-- 카테고리만 있는 경우 -->
+				      <if test="scategory_no gt 0 and scategory_no!=null and area.equals('') and search.equals('')"> 
+				      	where scategory_no = #{scategory_no}
+				      </if>
+				      <!-- 검색어와 지역만 있는 경우 -->
+				      <if test="!search.equals('') and search!=null and area!=null and !area.equals('') and scategory_no lte 0"> 
+				      	where study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%' 
+				      	and study_area like '%'||'${area}'||'%'
+				      </if>
+				      <!-- 검색어와 카테고리만 있는 경우 -->
+				      <if test="!search.equals('') and search!=null and area.equals('') and scategory_no gt 0"> 
+				      	where study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%' 
+				      	and scategory_no = #{scategory_no}
+				      </if>
+				      <!-- 지역과 카테고리만 있는 경우 -->
+				      <if test="!area.equals('') and area!=null and scategory_no gt 0 and search.equals('')"> 
+				      	where study_area like '%'||'${area}'||'%' and scategory_no = #{scategory_no}
+				      </if>
+				      
+				       order by study_no desc))s,
+				       scategory sc where s.scategory_no=sc.scategory_no
+	
+				    <![CDATA[
+				     and rn between #{start} and #{end}
+				    order by rn]]>
+	
+	</select>
+	
+	<select id="getOneStudy" resultType="study_vo">
+		select * from study where study_no=#{study_no}
+	</select>
+	
+	<insert id="insertStudy">
+		insert into study
+		 (
+			study_no,
+			scategory_no,
+			study_title,
+			study_explain1,
+			study_explain2,
+			study_explain3,
+			study_content,
+			study_regdate,
+			study_person,
+			study_limit,
+			study_fname,
+			std_no,
+			study_area
+		) values
+		 (
+			#{study_no},
+			#{scategory_no},
+			#{study_title},
+			#{study_explain1},
+			#{study_explain2},
+			#{study_explain3},
+			#{study_content},
+			sysdate,
+			1,
+			#{study_limit},
+			#{study_fname},
+			#{std_no},
+			#{study_area}
+		  )
+	</insert>
+	
+	<delete id="deleteStudy" >
+		delete study where study_no=#{study_no}
+	</delete>
+	
+	<select id="getNextStudyNo" resultType="java.lang.Integer">
+		select nvl(max(study_no),0)+1 from study
+	</select>
+	
+	<select id="getTotalCount" resultType="java.lang.Integer">
+		select count(*) 
+		from study s, scategory sc
+		where s.scategory_no= sc.scategory_no
+
+	<!-- 검색어 지역 카테고리넘버 다 있는 경우 -->
+		<if test="!search.equals('') and search!=null and area!=null and !area.equals('') and scategory_no lte 0">
+			and study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%'
+			and study_area like '%'||'${area}'||'%' and s.scategory_no = #{scategory_no}
+		</if>
+		<!-- 검색어만 있는 경우 -->
+		<if test="!search.equals('') and search!=null and area.equals('') and scategory_no lte 0">
+			and study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%'
+		</if>
+		<!-- 지역만 있는 경우 -->
+		<if test="area!=null and !area.equals('') and search.equals('') and scategory_no lte 0">
+			and study_area like '%'||'${area}'||'%'
+		</if>
+		<!-- 카테고리만 있는 경우 -->
+		<if test="scategory_no gt 0 and scategory_no!=null and area.equals('') and search.equals('')">
+			and s.scategory_no = #{scategory_no}
+		</if>
+		<!-- 검색어와 지역만 있는 경우 -->
+		<if test="!search.equals('') and search!=null and area!=null and !area.equals('') and scategory_no lte 0">
+			and study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%'
+			and study_area like '%'||'${area}'||'%'
+		</if>
+		<!-- 검색어와 카테고리만 있는 경우 -->
+		<if test="!search.equals('') and search!=null and area.equals('') and scategory_no gt 0">
+			and study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%'
+			and s.scategory_no = #{scategory_no}
+		</if>
+		<!-- 지역과 카테고리만 있는 경우 -->
+		<if test="!area.equals('') and area!=null and scategory_no gt 0 and search.equals('')">
+			and study_area like '%'||'${area}'||'%' and s.scategory_no =
+			#{scategory_no}
+		</if>
+		
+	</select>
+	
+	<update id="updateStudy">
+		update study 
+		set study_title = #{study_title}, study_content=#{study_content},
+		scategory_no = #{scategory_no},
+		study_limit = #{study_limit},
+		study_fname = #{study_fname},
+		study_regdate=sysdate,
+		study_area = #{study_area},
+		study_explain1 = #{study_explain1},
+		study_explain2 = #{study_explain2},
+		study_explain3 = #{study_explain3}
+		where study_no=#{study_no}
+	</update>
+	
+	<!-- 카테고리 이름들만을 반환하는 쿼리 -->
+	<select id="getScategoryList" resultType="study_vo">
+		select * from scategory
+	</select>
+	
+	<update id="updateStudyApply">
+		update study 
+		set study_apply1 = #{study_apply1},
+		study_apply2 = #{study_apply2},
+		study_apply3 = #{study_apply3},
+		study_apply4 = #{study_apply4},
+		study_apply5 = #{study_apply5},
+		study_person = study_person+1
+		where study_no=#{study_no}
+	</update>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,79 @@
+/* @import "reset.css"; */
+
+
+* {
+    padding : 0px;
+    margin : 0px;
+}
+
+
+.totalWrap {
+    width : 1078px;
+    padding : 10px;
+    margin : 10px;
+   /* border: 1px solid #d1d1d1; */
+
+}
+
+/* 
+.wrap::after{
+    content:'';
+    display:block;
+    clear: both;
+}
+
+.leftBar {
+    float:left;
+    border : 1px solid #d1d1d1;
+    width : 150px;
+    height : 300px;
+}
+ 
+.main {
+    float:left;
+    margin-left : 10px;
+    width : 900px;
+    border: 1px solid #d1d1d1;
+    text-align: center;
+    
+}
+
+.innerWrap {
+    padding : 10px;
+    border: 1px solid #d1d1d1;
+    width : 800px;
+    margin: 50px auto 50px auto;
+    
+}
+
+.ul{
+    list-style: none;
+}
+.li {
+    padding : 10px;
+}
+
+.table {
+    padding : 10px;
+    margin  :10px;
+    width : 700px;
+
+}
+
+.table, .tr, .th, .td {
+    border-collapse: collapse;
+    border: 1px solid #d1d1d1;
+} */
+
+.h1,h2,h3 {
+    margin : 10px;
+    padding : 10px;
+}
+
+.tStamp {
+    width:600px;    
+    margin: 10px auto;
+}
+
+
+

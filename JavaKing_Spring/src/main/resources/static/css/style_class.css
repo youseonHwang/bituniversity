@@ -1,0 +1,27 @@
+*{
+	margin: 0px;
+	padding: 0px;
+}
+
+.page-item {
+	font-family: "맑은 고딕";
+    padding-right : 10px;
+}
+h2 {
+	width : 300px;
+	float : left;
+}
+
+.btns::after {
+	content:'';
+    display:block;
+    clear: both;
+}
+/* 
+li{
+	float: left;
+	list-style: none;
+	padding: 10px;
+	cursor: pointer;
+}
+ */

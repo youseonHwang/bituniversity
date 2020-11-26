@@ -1,0 +1,51 @@
+@import url("reset.css");
+* {
+    padding : 0px;
+    margin : 0px;
+}
+
+
+.wrap {
+    width : 1078px;
+    padding : 10px;
+    margin : 10px auto;
+   /* border: 1px solid #d1d1d1; */
+}
+
+.collegeWrap{
+    border-bottom: 1px solid #d1d1d1;
+    margin-bottom : 50px;
+    line-height: 40px;
+}
+
+.firstWrap {
+    margin-bottom  : 100px;
+    border-bottom : 3px solid #999;
+}
+
+.h1 {
+	font-size : 35px;
+	font-weight: bold;
+}
+
+.h{
+	font-size: 22px;
+	font-weight: bold;
+    float:left;
+    width : 200px;
+    /* background-color: pink; */
+}
+
+span {
+    font-size: 12px;
+    
+}
+
+.page {
+	font-size: 12px;
+	font : #d1d1d1;
+	text-align: right;
+}
+
+
+

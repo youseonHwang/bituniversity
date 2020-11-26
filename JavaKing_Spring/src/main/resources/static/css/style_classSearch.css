@@ -1,0 +1,99 @@
+@import "reset.css";
+
+* {
+    padding : 0px;
+    margin : 0px;
+}
+
+
+.totalWrap {
+    width : 1078px;
+    padding : 10px;
+    margin : 10px;
+   /* border: 1px solid #d1d1d1; */
+
+}
+
+.wrap::after{
+    content:'';
+    display:block;
+    clear: both;
+}
+
+.leftBar {
+    float:left;
+    border : 1px solid #d1d1d1;
+    width : 150px;
+    height : 300px;
+}
+
+.main {
+    float:left;
+    margin-left : 10px;
+    width : 900px;
+    border: 1px solid #d1d1d1;
+    
+}
+
+.innerWrap {
+    padding : 10px;
+    border: 1px solid #d1d1d1;
+    width : 800px;
+    margin: 50px auto 50px auto;
+    
+}
+
+
+/*ㄴ ------전체틀 */
+
+
+.ul{
+    list-style: none;
+}
+
+li {
+    float: left;
+	padding: 10px;
+	cursor: pointer;
+}
+
+.table {
+    padding : 10px;
+    margin  :10px;
+    width : 700px;
+
+}
+
+.table, tr, th, td {
+    border-collapse: collapse;
+    border: 1px solid #d1d1d1;
+}
+
+.h1 {
+	font-size : 24px;
+    margin : 10px;
+    padding : 10px;
+}
+
+.searchWrap::after{
+    content:'';
+    display:block;
+    clear: both;
+    
+}
+
+.searchTitle, .radios, .searchDetails, .btnSearch {
+    float: left;
+    margin-right: 50px;
+    
+}
+
+.searchTitle {
+    margin : 0 50px 0 20px;
+}
+
+.btnSearch:last-child{
+    margin-right: 0px;
+}
+
+

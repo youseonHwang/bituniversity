@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="class">
+
+<!-- 학생의 학부/학년 별 필수강의 리스트 -->
+<select id="detailClassGetReq" resultType="class_vo">
+	 select
+            col.college_name,
+	  		c.class_type,
+	  		c.class_level,
+	  		c.class_no,
+	  		c.class_name,
+	  		c.class_credit
+	  	from  class c, college col, student s, major m
+  		where  			
+            s.std_no = ${std_no}
+            and s.std_major = m.major_no
+            and m.college_no = col.college_no
+            and col.college_no = c.college_no
+            and c.class_type like '%0'
+        order by
+        	class_level desc    
+	</select>
+
+
+
+<!-- classInfo 를 위한 학부별 리스트 -->
+<select id="findByColNo" resultType="class_vo">
+	select * from class where college_no = ${college_no}
+</select>
+
+
+<!-- 수강신청시 nowcnt 증가 --> 
+<select id="addNowCnt" >
+  	update class set class_nowcnt = class_nowcnt+1 
+  	where class_no = #{class_no}
+</select>
+
+<!-- 수강신청취소시 nowcnt 감소 --> 
+<select id="subNowCnt" >
+  	update class set class_nowcnt = nvl(class_nowcnt-1,0) 
+  	where class_no = #{class_no}
+</select>
+
+
+<!-- 수강목록/등록/삭제/수정을 위한 노드 -->
+  <select id="classSelectAll" resultType="class_vo">
+    select rn,
+    class_level,
+    class_name,
+    c.college_name,
+    a.college_no,
+    class_type,
+    class_no, 
+    class_no, 
+    class_credit, 
+    class_startdate, 
+    class_enddate, 
+    class_dayofweek, 
+    class_time, 
+    a.pro_no,
+    p.pro_name,
+    class_room,
+    class_max,
+    class_nowcnt 
+    from (select rownum rn,
+		    class_level,
+		    college_no,
+		    class_type,
+		    class_name, 
+		    class_no, 
+		    class_credit, 
+		    class_startdate, 
+		    class_enddate, 
+		    class_dayofweek, 
+		    class_time, 
+		    pro_no,
+		    class_room,
+		    class_max,
+		    class_nowcnt  
+		    	from (select * from class 
+		    	where ${option} like '%'||'${search}'||'%'
+		   		order by class_type)) a,
+	    professor p,
+	    college c
+    where a.pro_no=p.pro_no
+    and a.college_no=c.college_no
+    and rn between #{start} and #{end}
+    order by rn
+  </select>
+  
+  <select id="classTotalRecord" resultType="java.lang.Integer">
+  	select count(*) from class 
+    where ${option} like '%'||'${search}'||'%'
+  </select>
+  
+  <select id="classNextNo" resultType="java.lang.Integer">
+  	select nvl(max(class_no),0)+1 from class
+  </select>
+  
+  <select id="classFindByNo" resultType="class_vo">
+  	select 
+	  	class_no,
+	  	class_name,
+	  	class_startdate,
+	  	class_enddate,
+		class_dayofweek,
+		class_time,
+		class_room,
+		class_credit,
+		class_type,
+		c.pro_no,
+		class_level,
+		c.college_no,
+		class_max,
+		class_nowcnt,
+	  	p.pro_name,
+	  	col.college_name 
+	from class c, professor p, college col 
+	where c.class_no = #{class_no} 
+		and c.pro_no = p.pro_no
+		and c.college_no = col.college_no
+  </select>
+  
+  <select id="classInsert">
+  	insert into class (
+  	class_no, 
+    class_name, 
+    class_startdate, 
+    class_enddate, 
+    class_dayofweek, 
+    class_time, 
+    class_room, 
+    class_credit, 
+    class_type, 
+    pro_no,
+    class_level,
+    college_no,
+    class_max,
+    class_nowcnt 
+  	) values(
+  	#{class_no}, 
+    #{class_name}, 
+    #{class_startdate}, 
+    #{class_enddate}, 
+    #{class_dayofweek}, 
+    #{class_time}, 
+    #{class_room}, 
+    #{class_credit}, 
+    #{class_type}, 
+    #{pro_no},
+   	#{class_level},
+    #{college_no},
+    nvl(#{class_max},0),
+    #{class_nowcnt}  
+  	)
+  </select>
+  
+  <select id="classUpdate">
+  update class set
+    class_no=#{class_no}, 
+    class_name=#{class_name}, 
+    class_startdate=#{class_startdate}, 
+    class_enddate=#{class_enddate}, 
+    class_dayofweek=#{class_dayofweek}, 
+    class_time=#{class_time}, 
+    class_room=#{class_room}, 
+    class_credit=#{class_credit}, 
+    class_type=#{class_type}, 
+    class_level=#{class_level},
+    college_no=#{college_no},
+    pro_no=#{pro_no},
+    class_max=#{class_max}
+   where
+    class_no=#{class_no} 
+  </select>
+  
+  <select id="classDelete">
+  delete class where class_no=#{class_no}
+  </select>
+
+
+
+
+
+
+</mapper>

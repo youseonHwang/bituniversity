@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="calendar">
+	<select id="selectAll" resultType="calendar_vo">
+		select no, title, TO_CHAR(start_date, 'YYYY-MM-DD') start_date,TO_CHAR(end_date, 'YYYY-MM-DD') end_date,type from calendar
+	</select>
+	<select id="selectOne" resultType="calendar_vo">
+		select no, title, TO_CHAR(start_date, 'YYYY-MM-DD') start_date,TO_CHAR(end_date, 'YYYY-MM-DD') end_date,type from calendar 
+		where no=#{no}
+	</select>
+	<insert id="insert">
+		insert into calendar values(#{no},#{title},TO_DATE(#{start_date},'YYYY-MM-DD'),TO_DATE(#{end_date},'YYYY-MM-DD')+1,#{type})
+	</insert>
+	<update id="update">
+		update calendar set title=#{title}, start_date=TO_DATE(#{start_date},'YYYY-MM-DD'),
+		end_date=TO_DATE(#{end_date},'YYYY-MM-DD')+1,type=#{type} where no=#{no}
+	</update>
+	<delete id="delete">
+		delete calendar where no=#{no}
+	</delete>
+	<select id="getNextNo" resultType="java.lang.Integer">
+		select max(no)+1 from calendar
+	</select>
+	<select id="searchAll" resultType="calendar_vo" parameterType="hashMap">
+		<![CDATA[
+		select no, title, TO_CHAR(start_date, 'YYYY-MM-DD') as start_date,TO_CHAR(end_date-1, 'YYYY-MM-DD') as end_date, type from calendar 
+		where  start_date>TO_DATE(#{start_date},'YYYY-MM-DD') and 
+		end_date-1<TO_DATE(#{end_date},'YYYY-MM-DD')
+		  ]]>
+	</select>
+</mapper>

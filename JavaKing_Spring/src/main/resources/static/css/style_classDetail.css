@@ -1,0 +1,39 @@
+@import "reset.css";
+/* 
+* {
+    padding : 0px;
+    margin : 0px;
+}
+ */
+
+.wrap {
+    width : 1078px;
+    padding : 10px;
+    margin : 10px;
+ /*    border: 1px solid #d1d1d1; */
+}
+/* 
+table, th, tr, td {
+    padding : 5px;
+    border-collapse : collapse;
+    border : 1px solid #d1d1d1;
+} */
+
+.stdCredit::after{
+    content:'';
+    display:block;
+    clear:both;
+
+}
+.stdCredit_innerWrap {
+   float:left;
+   width : 300px;
+   
+}
+
+.subjectTable, .tableSection{
+	height : 300px;
+	overflow:auto;
+}
+
+
