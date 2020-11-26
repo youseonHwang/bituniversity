@@ -43,10 +43,12 @@ public class BoardManager {
 		return re;
 	}
 	
-	public static void increaseHit(int board_no) {
-		SqlSession session = sqlSessionFactory.openSession();
-		session.update("board.increaseHit", board_no);
+	public static int increaseHit(int board_no) {
+		int re= -1;
+		SqlSession session = sqlSessionFactory.openSession(true);
+		re= session.update("board.increaseHit", board_no);
 		session.close();
+		return re;
 	}
 	
 	public static BoardVo getBoard(int board_no) {
@@ -91,7 +93,6 @@ public class BoardManager {
 		return n;
 	}
 	
-	
 	public static int getNextNo() {
 		int n = 0;
 		SqlSession session = sqlSessionFactory.openSession();
@@ -107,5 +108,13 @@ public class BoardManager {
 		re = session.insert("board.insertBoard", b_vo);
 		session.close();
 		return re;
+	}
+	
+	public static List<HashMap<String, Integer>> getNextOrBeforeNo(int board_no) {
+		List<HashMap<String, Integer>> list =null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("board.getNextOrBeforeNo", board_no);
+		session.close();
+		return list;
 	}
 }

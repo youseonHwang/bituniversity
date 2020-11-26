@@ -139,7 +139,11 @@
 				       
 				       title_a.text(item.board_title)
 				       title_td.append(title_a)
-			       var std_no = $("<td></td>").text(item.std_no)
+				   if(item.board_category != '익명게시판') {
+			       		var std_no = $("<td></td>").text(item.std_no)
+				   } else{
+					   	var std_no = $("<td></td>").text('익명');
+				   }
 			       var regdate = $("<td></td>").text(item.board_regdate)
 			       var hit = $("<td></td>").text(item.board_hit)
 			       $(tr).append(rn,category,title_td,std_no,regdate,hit);

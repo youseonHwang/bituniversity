@@ -12,16 +12,19 @@
   list-style: none; 
 }
 #cssmenu ul li {
+  text-align:center;
   position: relative;
   display: block;
 }
 #cssmenu ul li a {
+  text-align:center;
   display: block;
   text-decoration: none;
   position: relative;
   height : 50px;
 }
 #cssmenu > ul {
+  text-align:center;
   border: 1px solid #cccccc;
   border-radius: 3px;
   background: #ffffff; 
