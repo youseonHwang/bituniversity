@@ -119,7 +119,7 @@ $(function(){
     				success : function(data) {
     					alert("ok");
     				},
-    				error:function(request, status, error){
+    				errㅜ서or:function(request, status, error){
     					alert("(등록실패) 입력값을 확인하세요.");
     				}});
     			$("input").val('');
