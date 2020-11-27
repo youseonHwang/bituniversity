@@ -325,7 +325,7 @@
 
                 <!-- Buttons -->
                 <div class="d-sm-flex justify-content-sm-between align-items-sm-center">
-                  <a class="d-block mb-3 mb-sm-0" href="classic.html">
+                  <a class="d-block mb-3 mb-sm-0" href="/login/listBoard.do?board_boardno="+${board_boardno}>
                     <i class="fa fa-arrow-left mr-2"></i>
                    	 목록으로 돌아가기
                   </a>
