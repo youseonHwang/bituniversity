@@ -104,4 +104,12 @@ public class GradeManager {
 		session.close();
 		return re;
 	}
+	
+	public static List<GradeVo> printAll(int std_no){
+		List<GradeVo> list = null;
+		SqlSession session = sqlSessionFactory.openSession();
+		list = session.selectList("grade.printAll",std_no);
+		session.close();
+		return list;
+	}
 }

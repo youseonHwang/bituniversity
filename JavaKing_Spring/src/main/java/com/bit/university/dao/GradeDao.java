@@ -42,4 +42,7 @@ public class GradeDao {
 		return GradeManager.getNextNo();
 	}
 	
+	public List<GradeVo> printAll(int std_no) {
+		return GradeManager.printAll(std_no);
+	}
 }
