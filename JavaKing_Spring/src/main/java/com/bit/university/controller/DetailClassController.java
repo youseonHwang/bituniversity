@@ -50,6 +50,7 @@ public class DetailClassController {
 	@ResponseBody
 	public int detailClassGetCrd (int std_no, String class_type) {
 		
+		
 		//화면에서 class_type 구분해서 받아오기
 		HashMap map = new HashMap();
 		map.put("std_no",std_no);
