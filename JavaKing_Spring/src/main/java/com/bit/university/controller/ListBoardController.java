@@ -29,7 +29,10 @@ public class ListBoardController {
 		int board_boardno = 100;
 		String board_category = "공지사항";
 		
-		if((request.getParameter("board_boardno"))!=null) { //다른 게시판을 선택한 경우
+		/****************************************************************************/
+		
+		// nav메뉴바나 카테고리 메뉴를 통해서 다른 게시판을 선택한 경우
+		if((request.getParameter("board_boardno"))!=null) { 
 			board_boardno = Integer.parseInt(request.getParameter("board_boardno"));
 			switch (board_boardno) {
 				case 100: board_category = "공지사항"; break;
@@ -42,9 +45,7 @@ public class ListBoardController {
 			board_category = (String) request.getParameter("board_category");
 		}
 		
-		
-		System.out.println(board_category+"////"+ board_boardno);
-		
+		/****************************************************************************/
 		model.addAttribute("board_category", board_category);
 		model.addAttribute("board_boardno", board_boardno);
 		
@@ -54,18 +55,17 @@ public class ListBoardController {
 
 	@GetMapping("/login/listBoard")
 	@ResponseBody
-	public HashMap listBoardGet(HttpServletRequest request, HttpSession session, 
-			int page_num, int page_size, String keyword, String search,
+	public HashMap listBoardGet(HttpServletRequest request, int page_num, int page_size, String keyword, String search,
 			int board_boardno,String board_category) throws Throwable {
 
-		session = request.getSession();
-
-		//ajax을 통해 받아온 page_num과 page_size확인
+		HttpSession session = request.getSession();
+		/**********************************************************************************************************************/
+		// ajax을 통해 받아온 page_num과 page_size확인
 		System.out.println("page_num는"+page_num);
 		System.out.println("page_size는"+page_size);
 		System.out.println("keyword는"+keyword);
 		System.out.println("search는"+search);
-		//-----------------------------------------------------------------------------------------------------------------------------
+		/**********************************************************************************************************************/
 
 		//search(검색어가) null이 아닌 경우 검색 요청이 있는거니깐 keyword와 search를 session에 상태유지
 		if(search != null) {
@@ -77,13 +77,12 @@ public class ListBoardController {
 			search = (String)session.getAttribute("search");
 			keyword = (String)session.getAttribute("keyword"); 
 		}
-		System.out.println("여기까지요44444444444444");
+		
+
+		/**********************************************************************************************************************/
 
 
-		//--------------------------------------------------------------------------------------
-
-		System.out.println("board_category는 "+ board_category);
-		//board_count변수에 해당 게시판의 모든 게시물 수를 반환한 값을 저장
+		// board_count변수에 해당 게시판의 모든 게시물 수를 반환한 값을 저장
 		board_count=b_dao.getBoardCount(board_boardno, board_category, search, keyword);
 
 		int start = (page_num-1)*page_size+1;
@@ -93,10 +92,9 @@ public class ListBoardController {
 		}   
 
 		
-		//------------------------------------------------------------------------------------
-	
+		/**********************************************************************************************************************/
 
-		//table에 넣을 게시물 list를 위한 map변수
+		// table에 넣을 게시물 list를 위한 map변수
 		HashMap for_list_map = new HashMap();
 
 		for_list_map.put("board_boardno", board_boardno);
@@ -106,8 +104,10 @@ public class ListBoardController {
 		for_list_map.put("keyword", keyword);
 		for_list_map.put("start", start);
 		for_list_map.put("end", end);
-		//-------------------------------------------------------------------------------------------
-
+		
+		/**********************************************************************************************************************/
+		
+		// Json 형태로 보내줄 map 생성
 		HashMap all_map =new HashMap();
 		
 		String board_boardname="";

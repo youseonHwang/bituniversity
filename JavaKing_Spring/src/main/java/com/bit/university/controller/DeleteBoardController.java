@@ -30,12 +30,11 @@ public class DeleteBoardController {
 	public int deleteBoard(HttpServletRequest request) throws Throwable {
 		
 		int board_no=Integer.parseInt(request.getParameter("board_no"));
-		System.out.println(board_no);
 		BoardVo b_vo=b_dao.getBoard(board_no);
-		System.out.println(b_vo);
 		
-		// --------------------------------------------------------------------------------------------------
+		/*******************************************************************/
 		
+		// 댓글 리스트를 가져와서 댓글부터 삭제
 		List<ReplyVo> r_list = r_dao.listReply(board_no);
 			 
 		for (ReplyVo r : r_list) {
@@ -43,7 +42,9 @@ public class DeleteBoardController {
 				r_dao.deleteReply(reply_no);
 		}
 
+		/*******************************************************************/
 		
+		// 이미지 파일이 있다 삭제
 		String path = request.getRealPath("image");
 		
 		int re =b_dao.deleteBoard(board_no);

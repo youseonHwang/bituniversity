@@ -17,13 +17,10 @@ public class UpdateReplyController {
 	@Autowired
 	private ReplyDao r_dao;
 	
-	
 	@PostMapping("/login/updateReply")
 	@ResponseBody
 	public int udpateReply(HttpServletRequest request, ReplyVo r_vo) throws Throwable {
-		
-		System.out.println("updateReply 컨트롤러 옴");
-		System.out.println(r_vo);	
+
 		int re = r_dao.updateReply(r_vo.getReply_content(), r_vo.getReply_no());
 
 		return re;

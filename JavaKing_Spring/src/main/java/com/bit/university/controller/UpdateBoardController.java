@@ -9,14 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.university.dao.BoardDao;
-import com.bit.university.dao.ReplyDao;
 import com.bit.university.vo.BoardVo;
 
 @Controller
@@ -26,13 +23,14 @@ public class UpdateBoardController {
 	private BoardDao b_dao;
 	
 	
-	@GetMapping("/login/updateBoard.do")
+	@GetMapping(value="/login/updateBoard.do", produces= "application/json; charset=utf-8")
 	public ModelAndView updateBoardView(HttpServletRequest request) throws Throwable {
+		request.setCharacterEncoding("utf-8");
+
 		ModelAndView mav = new ModelAndView();
-		b_dao = new BoardDao();
 		
 		int board_no=Integer.parseInt(request.getParameter("board_no"));
-		
+		/**********************************************************************************************************************/
 		//가져온 글 번호로 board vo 생성
 		BoardVo b_vo = b_dao.getBoard(board_no);
 		
@@ -55,13 +53,11 @@ public class UpdateBoardController {
 	@PostMapping("/login/updateBoard")
 	@ResponseBody
 	public int updateBoardPost(BoardVo b_vo, HttpServletRequest request) throws Throwable {
-		System.out.println(b_vo.toString());
 		
-		//-----------------------------------------------------------------------
+		System.out.println("updateBoardPost- Controller의 b_vo =>" +b_vo );
 		
-		System.out.println("b_vo.boardcategory::::::::" +b_vo.getBoard_category());
-		System.out.println(b_vo.getBoard_no()+"/"+ b_vo.getBoard_boardno()+"/"+b_vo.getBoard_content()+"/"+b_vo.getBoard_title()
-		+"/"+b_vo.getBoard_pwd());
+		/**********************************************************************************************************************/
+		// 파일처리
 		String path = request.getRealPath("image");
 		System.out.println(path);
 		
@@ -84,9 +80,11 @@ public class UpdateBoardController {
 	    	  b_vo.setBoard_fname(old_fname);
 	      }
 		 
-		 
+		/**********************************************************************************************************************/
 		int re =b_dao.updateBoard(b_vo);
-
+		
+		
+		//성공했는지 확인하고 이전 파일이 있었다면 기존 파일 삭제하기 위해 성공여부를 물어봄
 		if(re<=0) {
 			
 		} else {
@@ -95,7 +93,7 @@ public class UpdateBoardController {
 				file.delete();
 			}
 		}
-
+		/**********************************************************************************************************************/
 		return re;
 		
 		

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -95,10 +96,12 @@
 					$('#board_no').html(b_vo_list.board_no);
 					
 					// 익명게시판일 경우 작성자(학번) 나오지 않게 하기
-					
-					if(b_vo_list.board_category != '익명게시판') {
-						$('#std_no').html(b_vo_list.std_no)
-					} else {
+					// 공지사항일 경우 관리자로 나오게 하기
+					if(b_vo_list.board_category != '익명게시판'  && b_vo_list.board_category != '공지사항') {
+						$('#std_no').html(b_vo_list.std_no);
+					} else if (b_vo_list.board_category == '공지사항'){
+						$('#std_no').html('관리자');
+					} else{
 						$('#std_no').html('익명');
 					}
 					
@@ -106,7 +109,11 @@
 					$('#board_content').html(b_vo_list.board_content)
 					$('#board_hit').html(b_vo_list.board_hit)
 					$('#board_regdate').html(b_vo_list.board_regdate)
-					$('#board_fname').html(b_vo_list.board_fname)
+					if(b_vo_list.board_fname!=null) {
+						$('#board_fname').html(b_vo_list.board_fname)
+					} else{
+						$('#board_fname').html("첨부파일이 없습니다.")
+					}
 					$('#fname_href').attr('href','../image/'+b_vo_list.board_fname)
 					
 				})
@@ -144,9 +151,13 @@
 					var reply_no = $('<input type="hidden" name="reply_no" value="'+reply_list[row].reply_no+'">');
 
 					// 익명게시판일 경우 작성자(학번) 나오지 않게 하기
+					// 공지사항일 경우 작성자 관리자로 나오게 하기
 					var reply_std_no;
-					if(b_vo_list.board_category != '익명게시판') {
+					if(b_vo_list.board_category != '익명게시판' && b_vo_list.board_category != '공지사항' ) {
 						reply_std_no = $('<h5 class="mt-0"></h5>').html(reply_list[row].std_no);
+					} else if(b_vo_list.board_category == '공지사항') {
+						reply_std_no = $('<h5 class="mt-0"></h5>').html('관리자');
+						
 					} else {
 						reply_std_no = $('<h5 class="mt-0"></h5>').html('익명');
 					}
@@ -230,8 +241,28 @@
 					    processData: false,
 					    contentType: false,
 						success: function(res){
-							if(res == 1){getDetail(board_no);}
-							else{alert("실패");}
+							if(res == 1) {//수정 성공시
+			                 	   var dialog = bootbox.dialog({
+				                    	title: '수정',
+				                    	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+			                 		   	buttons: {ok: function () {getDetail(board_no);}}
+		                 		   	});
+			                 		            
+			                 		dialog.init(function(){
+			                 		    setTimeout(function(){dialog.find('.bootbox-body').html('수정 완료!');},2000); 
+			                    	})
+			                    }
+			                    else{//수정 실패시
+			                 	   var dialog = bootbox.dialog({
+			                 		    title: '수정',
+			                 		    message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',	                    		  
+			                 		});
+			                 		            
+			                 		dialog.init(function(){
+			                 		    setTimeout(function(){ dialog.find('.bootbox-body').html('수정 실패!');}, 2000);
+			                 		});
+			                   }
+
 						}
 					})	
 			    }
@@ -240,26 +271,52 @@
 		
 		//-------------------------댓글 삭제 관련-------------------------------------
 		
-		//댓글 삭제 버튼을 눌렀을때 이벤트(진짜로 삭제할건지 확인 추가 예정)
+		// 댓글 삭제 버튼을 눌렀을때 이벤트
 		$(document).on('click','#reply_delete_btn', function(){
 			$('.btn-group').empty();
 			var reply_no = $(this).parent().find('input').val();
 			var data = {reply_no:reply_no}
-			$.ajax({
-				url:"/login/deleteReply",
-				type:'GET',
-				data: data,
-				success: function(res){
-					if(res != 1){
-						setTimeout(function() {
-							alert('댓글 삭제에 실패하였습니다.')	
-						}, 1000);
-					} else{
-						getDetail(board_no)
-					}
-				}
-			})
-		})
+			var bb = bootbox.confirm({
+	               message: "정말로 삭제하시겠습니까? 복원되지 않습니다.",
+	               buttons: {
+	                   confirm: {label: 'Yes',className: 'btn-success'},
+	                   cancel: {label: 'No', className: 'btn-danger'}
+	               },
+	               callback: function (result) {
+	                    if(result == true) { //confirm을 눌렀을때 실행
+	                        $.ajax({ url:"/login/deleteReply", type:'GET', data:data, success:function(res){
+		                       if(res == 1) {//삭제 성공시
+		                    	   var dialog = bootbox.dialog({
+			                    	   	title: '삭제',
+			                    	   	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+		                    		   	buttons: {ok: function () {getDetail(board_no)}}
+	                   		    	});
+		                    		            
+		                    		dialog.init(function(){
+		                    		    setTimeout(function(){dialog.find('.bootbox-body').html('삭제 완료!');},2000); 
+		                       		})
+		                       }
+		                       else{//삭제 실패시
+		                    	   var dialog = bootbox.dialog({
+		                    		    title: '삭제',
+		                    		    message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',	                    		  
+		                    		});
+		                    		            
+		                    		dialog.init(function(){
+		                    		    setTimeout(function(){ dialog.find('.bootbox-body').html('삭제 실패!');}, 2000);
+		                    		});
+		                      }
+	                       }})
+	               		}}
+	           }); //삭제 확인 박스 종료
+
+	           //삭제 확인 박스 css
+	           bb.find('.modal-content').css({
+								        	   	'border' : '1px black',
+								            	'font-weight' : 'bold',
+								              	'margin-top':'250px'
+	           })
+		});
 		//-------------------------이전글 다음글 관련------------------------------------
 		$(document).on('click', '#btn_next', function(){
 			window.location.href="/login/detailBoard.do?board_no="+next_board_no;
@@ -274,7 +331,7 @@
 		
 		
 		$(document).on('click' , '#btn_update', function(){
-			window.location.href="/login/updateBoard.do?board_no="+board_no	
+			window.location.href="/login/updateBoard.do?board_no="+board_no
 		})
 
 		
@@ -371,7 +428,7 @@
           <hr>
 
           <!-- Post Content -->
-          <p class="lead" id="board_content"></p>
+          <p class="lead" id="board_content" style="white-space: pre-line;"></p>
 
           <hr>
 

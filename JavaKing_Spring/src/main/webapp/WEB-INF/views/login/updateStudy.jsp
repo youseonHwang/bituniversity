@@ -47,6 +47,18 @@
   
   
   <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=dab7038698ec6fb3a777bf332d640350&libraries=services"></script>
+  
+    <!-- JS Global Compulsory -->
+  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
+  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
+  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
+  
+  <!-- bootbox code -->
+  <script src="../bootbox/bootbox.min.js"></script>
+  <script src="../bootbox/bootbox.locales.min.js"></script>
+  
+  
   <script type="text/javascript">
 	$(function(){
 		var csrf_token = "{{ csrf_token() }}";
@@ -70,10 +82,20 @@
 		
 		//지도를 표시하고 경도와 위도를 가져오는
 		var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-	    mapOption = {
-	        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
-	        level: 1 // 지도의 확대 레벨
-	    };  
+		if(lat != NaN && lng != NaN) {
+		    mapOption = {
+			   
+		        center: new kakao.maps.LatLng(lat, lng), // 지도의 중심좌표
+		        level: 1 // 지도의 확대 레벨
+		    };  
+		} else{
+			mapOption = {
+					   
+			        center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+			        level: 1 // 지도의 확대 레벨
+			};  
+		}
+		
 
 		// 지도를 생성합니다    
 		var map = new kakao.maps.Map(mapContainer, mapOption); 
@@ -189,16 +211,30 @@
 			    processData: false,
 			    contentType: false,
 				success:function(res){
-					if(res != 1) {
-						setTimeout(function() {
-							alert('스터디 등록에 실패하였습니다.')	
-						}, 1000)
-					} else{
-						location.href="/login/listStudy.do"
-					}
+					if(res == 1) {//수정 성공시
+	                 	   var dialog = bootbox.dialog({
+		                    	title: '수정',
+		                    	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',
+	                 		   	buttons: {ok: function () {location.href="/login/listStudy.do"}}
+	            		    	});
+	                 		            
+	                 		dialog.init(function(){
+	                 		    setTimeout(function(){dialog.find('.bootbox-body').html('수정 완료!');},2000); 
+	                    		})
+	                  }
+	                  else{//등록 실패시
+	                 	   var dialog = bootbox.dialog({
+	                 		    title: '수정',
+	                 		    message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',	                    		  
+	                 		});
+	                 		            
+	                 		dialog.init(function(){
+	                 		    setTimeout(function(){ dialog.find('.bootbox-body').html('수정 실패!');}, 2000);
+	                 		});
+	                   }
 			}})
         })
-	});
+	})
   </script>
 </head>
 
@@ -216,7 +252,7 @@
   <!-- ========== MAIN CONTENT ========== -->
   <main id="content">
     <!-- Hero Section -->
-    <div class="bg-overlay-dark-v1 bg-img-hero-center" style="background-image: url(../../assets/img/demo/job/hero.jpg);">
+    <div class="bg-overlay-dark-v1 bg-img-hero-center"style="background-image: url(../../image/library.jpg);"">
       <div class="container space-2 space-3--lg position-relative z-index-2">
         <!-- Content -->
         <div class="w-md-80 mx-md-auto text-center mt-4 mb-8">
@@ -419,12 +455,6 @@
     <i class="fa fa-arrow-up u-go-to__inner"></i>
   </a>
   <!-- End Go to Top -->
-
-  <!-- JS Global Compulsory -->
-  <script src="../../assets/vendor/jquery/dist/jquery.min.js"></script>
-  <script src="../../assets/vendor/jquery-migrate/dist/jquery-migrate.min.js"></script>
-  <script src="../../assets/vendor/popper.js/dist/umd/popper.min.js"></script>
-  <script src="../../assets/vendor/bootstrap/bootstrap.min.js"></script>
 
   <!-- JS Implementing Plugins -->
   <script src="../../assets/vendor/hs-megamenu/src/hs.megamenu.js"></script>

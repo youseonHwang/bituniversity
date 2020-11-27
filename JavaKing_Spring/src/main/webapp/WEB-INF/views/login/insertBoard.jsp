@@ -58,7 +58,9 @@
 		// 등록 버튼을 눌렀을 때 실행하는 동작----------------------------------------------------------------
 		$('#btn_insert').click(function() {
 			var form_data = new FormData($('#insert_form')[0])
-			
+			var board_category = $("#board_category option:selected").val();
+			form_data.delete("board_category");
+			form_data.append("board_category", board_category);
 			$.ajax({
 				url: "/login/insertBoard",
 				type:'POST',
@@ -67,7 +69,7 @@
 			    contentType: false,
 				success:function(res){
 					if(res == 1) {//등록 성공시
-					   var board_category = $("#board_category option:selected").val();
+					   
                  	   var dialog = bootbox.dialog({
 	                    	title: '등록',
 	                    	message: '<p><i class="fa fa-spin fa-spinner"></i> Loading...</p>',

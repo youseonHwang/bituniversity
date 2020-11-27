@@ -1,23 +1,15 @@
 package com.bit.university.controller;
 
 import java.io.File;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.bit.university.dao.BoardDao;
-import com.bit.university.dao.ReplyDao;
 import com.bit.university.dao.StudyDao;
-import com.bit.university.vo.BoardVo;
-import com.bit.university.vo.ReplyVo;
 import com.bit.university.vo.StudyVo;
 
 @Controller
@@ -31,6 +23,7 @@ public class DeleteStudyController {
 	@ResponseBody
 	public int deleteStudyGet(HttpServletRequest request, int study_no) throws Throwable {
 		
+		// 이미지 파일이 있다면 삭제 후 스터디게시물 삭제
 		String path = request.getRealPath("image");
 		
 		StudyVo s_vo = s_dao.getOneStudy(study_no);

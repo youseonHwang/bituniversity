@@ -205,7 +205,7 @@
   <!-- ========== MAIN CONTENT ========== -->
   <main id="content">
     <!-- Hero Section -->
-    <div class="bg-overlay-dark-v1 bg-img-hero-center" style="background-image: url(../../assets/img/demo/job/hero.jpg);">
+    <div class="bg-overlay-dark-v1 bg-img-hero-center" style="background-image: url(../../image/library.jpg);"">
       <div class="container space-2 space-3--lg position-relative z-index-2">
         <!-- Content -->
         <div class="w-md-80 mx-md-auto text-center mt-4 mb-8">
