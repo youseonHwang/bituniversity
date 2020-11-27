@@ -19,7 +19,6 @@ public class StudentController {
 		this.dao = dao;
 	}
 	
-	
 	@RequestMapping("/login/studentInfo.do")
 	public void getStudentInfo(Model model, HttpServletRequest request) {
 		HttpSession session = request.getSession();
