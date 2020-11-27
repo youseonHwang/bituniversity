@@ -22,6 +22,7 @@ public class ListProfessorController {
 	}
 	
 	
+	
 	@GetMapping("/login/listProfessor.do")
 	public void listProfessor() {	
 	}
