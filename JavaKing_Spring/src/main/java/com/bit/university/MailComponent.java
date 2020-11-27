@@ -35,7 +35,7 @@ public class MailComponent {
 		for(int i = 0; i<student_vo.length; i++) {
 			SimpleMailMessage mailMessage = new SimpleMailMessage();
 			mailMessage.setSubject("[비트대학교]스터디 모집 완료 메일입니다."); //메일 제목
-			mailMessage.setFrom("dbtjs0221@gmail.com"); //비트대학교 관리자 메일
+			mailMessage.setFrom("bituniversityemail"); //비트대학교 관리자 메일
 			mailMessage.setText("안녕하세요 " + student_vo[i].getStd_name() + "님이 신청하신 비트대학교 스터디 모집이 완료되어"
 					+ "스터디원들의 메일 주소를 전달드립니다. 자세한 스터디 주제 선정 및 일정은 모집된 스터디원들과 의논 바랍니다."
 					+ "[email : "+ study_email_info +"]"); //메일 내용

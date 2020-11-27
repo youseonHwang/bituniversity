@@ -17,7 +17,6 @@ import com.bit.university.vo.StudyVo;
 @Controller
 public class InsertStudyController {
 
-
 	@Autowired
 	private StudyDao s_dao;
 	
@@ -29,30 +28,28 @@ public class InsertStudyController {
 	@PostMapping("/login/insertStudy")
 	@ResponseBody
 	public int insertStudyPost(StudyVo s_vo, HttpServletRequest request) {
+		
 		int re = -1;
-		int std_no;
+		int std_no = 0;
 		
-		System.out.println(s_vo.toString()); 
-		
-		System.out.println(s_vo.getScategory_no());
-		
-		
-
+		// 로그인 한 사람의 학번 가져오기
 		HttpSession session = request.getSession();
 		
 		if(session.getAttribute("std_no") != null) {
 			std_no = (int) session.getAttribute("std_no");
-		} else {
-			std_no = 2014104199;
+			s_vo.setStd_no(std_no);
 		}
-		s_vo.setStd_no(std_no);
 		
+		/***********************************************************************/
 		
-
+		// 다음 글 번호 가져오기
 		int study_no = (int)(s_dao.getNextStudyNo());
 		s_vo.setStudy_no(study_no);
 		
-
+		
+		/***********************************************************************/
+		
+		// 파일 처리
 		String path = request.getRealPath("image");
 		
 		String study_fname ="";
@@ -74,9 +71,9 @@ public class InsertStudyController {
 		      }
 		}
 		
-		System.out.println(s_vo);
-		
 		s_vo.setStudy_fname(study_fname);
+		
+		/***********************************************************************/
 		re = s_dao.insertStudy(s_vo);
 		
 		return re;

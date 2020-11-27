@@ -199,7 +199,7 @@
 		                     console.log(str);
 		                     var modal_body_content = $('<p></p>').text(item.study_content);
 		                     modal_body_content.attr("style","width: 800px;");
-		                     var apply_btn = $('<a class="btn btn-block btn-primary font-weight-medium mb-3" id="apply_btn"></a>').html('스터디 신청하기');
+		                     var apply_btn = $('<a class="btn btn-block btn-primary font-weight-medium mb-3 text-white" id="apply_btn"></a>').html('스터디 신청하기');
 		                     apply_btn.attr("apply_study_no", item.study_no);
 
 		                  row.append(modal_image, w, modal_body_content, apply_btn);
@@ -211,12 +211,12 @@
 		               if(std_no == item.std_no) {
 
 		                  var edit_a = $('<a id="edit_btn"></a>').attr('href', '/login/updateStudy.do?study_no='+item.study_no);
-		                  var edit_icon = $('<button type="button" class="btn btn-xs btn-icon btn-warning"></button>').append('<i class="fas fa-highlighter"></i>');
+		                  var edit_icon = $('<button type="button" class="btn btn-xs btn-icon btn-primary"></button>').append('<i class="fas fa-highlighter"></i>');
 		                     
 		                  edit_a.append(edit_icon);
 		                  
 		                  var del_a = $('<a id="del_btn"></a>').attr('study_no_idx', item.study_no);
-		                  var del_icon = $('<button type="button" class="btn btn-xs btn-icon btn-warning"></button>').append('<i class="far fa-trash-alt"></i>');
+		                  var del_icon = $('<button type="button" class="btn btn-xs btn-icon btn-primary"></button>').append('<i class="far fa-trash-alt"></i>');
 
 		                  del_a.append(del_icon);
 		                  
@@ -290,13 +290,9 @@
            bb.find('.modal-content').css({
 							        	   	'border' : '1px black',
 							            	'font-weight' : 'bold',
-							              	'margin-top':'250px'
+							              	'margin-top':'250px',
+							              	'background-color':'lightgrey'
            })
-           bb.find('.modal-content').css({
-	                                    	'border' : '1px black',
-	                                     	'font-weight' : 'bold',
-	                                       	'margin-top':'250px'
-           });
 
       });
 
@@ -400,7 +396,7 @@
         <!-- Content -->
         <div class="w-md-80 mx-md-auto text-center mt-4 mb-8">
           <h6 class="text-white letter-spacing-0_06 text-uppercase opacity-lg mb-1">Just explore then apply</h6>
-          <h1 class="text-white mb-0"></h1>
+          <h1 class="text-white mb-0">Find your study in a quick way</h1>
         </div>
 
         <!-- <form class="w-lg-80 mx-auto bg-white rounded shadow-sm" action="/listStudy"> -->

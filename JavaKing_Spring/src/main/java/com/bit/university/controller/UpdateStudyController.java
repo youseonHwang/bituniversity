@@ -26,13 +26,12 @@ public class UpdateStudyController {
 	@GetMapping("/login/updateStudy.do")
 	public ModelAndView updateStudyView(HttpServletRequest request) throws Throwable {
 		ModelAndView mav = new ModelAndView();
-		
-	    System.out.println("updateStudyController 입장");
-	    
+
 		int study_no = Integer.parseInt(request.getParameter("study_no"));
 		
+		/**********************************************************************************************************************/
+		// 저장되어있는 경도/위도/지번주소를 가져와서 view에서 필요한 data씩 잘라서 전달하기
 		StudyVo s_vo = s_dao.getOneStudy(study_no);
-		
 		String lat_lng_area = s_vo.getStudy_area();
 		System.out.println(lat_lng_area);
 		String lat = lat_lng_area.substring(1, lat_lng_area.indexOf("/"));
@@ -40,6 +39,7 @@ public class UpdateStudyController {
 		
 		System.out.println(lat+":::::::::::"+lng);
 		
+		/**********************************************************************************************************************/
 		mav.addObject("lat", lat);
 		mav.addObject("lng", lng);
 		mav.addObject("s_vo", s_vo);
@@ -53,8 +53,8 @@ public class UpdateStudyController {
 	public int updateStudyPost(StudyVo s_vo, HttpServletRequest request) throws Throwable {
 		
 		HttpSession session = request.getSession();
-		
-
+		/**********************************************************************************************************************/
+		// 파일 처리
 		String path = request.getRealPath("image");
 		System.out.println(path);
 		

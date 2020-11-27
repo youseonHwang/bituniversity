@@ -1,20 +1,16 @@
 package com.bit.university.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.websocket.Session;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.university.dao.BoardDao;
 import com.bit.university.dao.ReplyDao;
@@ -74,8 +70,14 @@ public class DetailBoardController {
 		HashMap<String, Integer> for_b_map = new HashMap<String, Integer>();
 		for_b_map = for_board_no_list.get(0);
 		
-		int next_board_no = Integer.parseInt(String.valueOf(for_b_map.get("NEXT_BOARD_NO")+""));
-		int before_board_no = Integer.parseInt(String.valueOf(for_b_map.get("BEFORE_BOARD_NO")+""));
+		int next_board_no =0;
+		int before_board_no=0;
+		if(for_b_map.get("NEXT_BOARD_NO")!=null) {
+			next_board_no = Integer.parseInt(String.valueOf(for_b_map.get("NEXT_BOARD_NO")+""));
+		}
+		if(for_b_map.get("BEFORE_BOARD_NO")!=null) {
+			before_board_no = Integer.parseInt(String.valueOf(for_b_map.get("BEFORE_BOARD_NO")+""));
+		}
 		/**************************************************************/
 		// 제이슨 형태로 view에 보내줄 데이터들 모두 map_all에 담기
 		map_all.put("std_no", std_no);

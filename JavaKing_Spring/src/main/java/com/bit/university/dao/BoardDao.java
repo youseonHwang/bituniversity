@@ -44,7 +44,6 @@ public class BoardDao {
 	}
 	
 	public int insertBoard(BoardVo b_vo) {
-		System.out.println("dao.boardcategory::::::::" +b_vo.getBoard_category());
 		return BoardManager.insertBoard(b_vo);
 	}
 	

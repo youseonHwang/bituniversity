@@ -15,58 +15,41 @@ import com.bit.university.dao.StudyDao;
 @Controller
 public class ListStudyController {
 
-
 	@Autowired
 	private StudyDao s_dao;
-	
-	
-	
-	/**********************************************************************
-	 *  ó�� ���͵� �Խ����� Ŭ������ ����
-	 *  ���͵� ī�װ� �޴��� ������ ��� �ش��ϴ� �˻� ���� ��� 
-	 * *********************************************************************/
  
 	@GetMapping("/login/listStudy.do")
 	public void listStudyView(HttpServletRequest request) throws Throwable {
 
 		int scategory_no = 0;
-
 		HttpSession session = request.getSession();
-
 		int std_no=0;
 
+		/**********************************************************************************************************************/
+		// 로그인 한 사람의 학번 가져오기 (view에서 본인이 기능을 사용하는 것인지 확인하기 위해)
 		if(session.getAttribute("std_no") != null) {
 			std_no = (int) session.getAttribute("std_no");
-		} else {
-			std_no = 2014104199;
-		}
+		} 
 		request.setAttribute("std_no", std_no);
 
-		//-------------------------------------------------------------------
-		if(request.getParameter("scategory_no")!=null) { //ī�װ� �޴� ��ư�� ������ ��쿡
+		/**********************************************************************************************************************/
+		// nav 메뉴를 통해서 새로운 view를 요청했는지 확인하기 위해 요청 확인
+		if(request.getParameter("scategory_no")!=null) { 
 			scategory_no = Integer.parseInt(request.getParameter("scategory_no"));
 		}
 		request.setAttribute("scategory_no", scategory_no);
 	}
 
 
-	/**********************************************************************
-	 *  ajax�� ���ؼ� �˻�� �ְų�
-	 *  more ��ư�� ������ ��� ���� ��Ʈ�ѷ�
-	 * *********************************************************************/
+	
 	@GetMapping("/login/listStudy")
 	@ResponseBody
-	public HashMap listStudyGet(HttpServletRequest request, int scategory_no, 
-			String search, String area, int page_num)
-					throws Throwable {
+	public HashMap listStudyGet(HttpServletRequest request, int scategory_no, String search, String area, int page_num) throws Throwable {
 		
 		HttpSession session = request.getSession();
-		
-		System.out.println(scategory_no+"::::::scategory_no");
-		System.out.println(search+"::::::search");
-		System.out.println(area+"::::::area");
-		
-		// more��ư Ŭ���� �˻��� ����
+
+		/**********************************************************************************************************************/
+		// more버튼을 눌렀을 경우 필요하여 session에 검색어 저장
 		if(search == null && !search.equals("")) {
 			session.setAttribute("search", search);
 		}
@@ -75,7 +58,6 @@ public class ListStudyController {
 			search = (String) session.getAttribute("search");
 		}
 		
-		// more��ư Ŭ���� ī�װ� �ѹ� ����
 		if(scategory_no == 0) {
 			session.setAttribute("search", search);
 		}
@@ -84,7 +66,6 @@ public class ListStudyController {
 			scategory_no = (int) session.getAttribute("scategory_no");
 		}
 		
-		// more��ư Ŭ���� ī�װ� �ѹ� ����
 		if(area !=null && !area.equals("")) {
 			session.setAttribute("area", area);
 		}
@@ -93,17 +74,14 @@ public class ListStudyController {
 			area = (String) session.getAttribute("area");
 		}
 
-
-		// count�� ���� ���� DAO�� ���� map����---------------------------------------------------------------
+		/**********************************************************************************************************************/
+		// more버튼을 위한 총 스터디 갯수를 세기 위한 map생성 
 		HashMap for_count_map = new HashMap();
 
 		for_count_map.put("scategory_no", scategory_no);
 		for_count_map.put("search", search);
 		for_count_map.put("area", area);
-		//-------------------------------------------------------------------------------------------
-
-		System.out.println(for_count_map);
-		/***************read more ��ư �κ� ����**********************/
+		/**********************************************************************************************************************/
 
 		int page_size = 10;
 		int study_count = s_dao.getTotalCount(for_count_map);
@@ -114,9 +92,9 @@ public class ListStudyController {
 			end = study_count;
 		}   
 
-		/***************read more ��ư �κ� ����**********************/
+		/**********************************************************************************************************************/
 
-		//table�� ���� �Խù� list�� ���� map����---------------------------------------------------------------
+		// 스터디 리스트를 만들기 위한 map 생성
 		HashMap for_list_map = new HashMap();
 
 		for_list_map.put("scategory_no", scategory_no);
@@ -126,13 +104,14 @@ public class ListStudyController {
 		for_list_map.put("end", end);
 		
 		System.out.println(for_list_map);
-		//-------------------------------------------------------------------------------------------
+		
+		/**********************************************************************************************************************/
 
-
+		// Json형태로 view로 보내주기 위한 map 생성
 		HashMap all_map =new HashMap();
 		all_map.put("list", s_dao.findAllStudy(for_list_map));
 
-		System.out.println(s_dao.findAllStudy(for_list_map));
+		/**********************************************************************************************************************/
 
 		return all_map;
 	}

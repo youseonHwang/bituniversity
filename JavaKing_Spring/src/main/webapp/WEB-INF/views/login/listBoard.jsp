@@ -139,11 +139,15 @@
 				       
 				       title_a.text(item.board_title)
 				       title_td.append(title_a)
-				   if(item.board_category != '익명게시판') {
-			       		var std_no = $("<td></td>").text(item.std_no)
-				   } else{
+				       
+				   if(item.board_category != '익명게시판' && item.board_category != '공지사항' ) {
+			       		var std_no = $("<td></td>").text(item.std_no);
+				   } else if (item.board_category == '공지사항'){
+					   var std_no = $("<td></td>").text('관리자');
+				   } else {
 					   	var std_no = $("<td></td>").text('익명');
 				   }
+				   
 			       var regdate = $("<td></td>").text(item.board_regdate)
 			       var hit = $("<td></td>").text(item.board_hit)
 			       $(tr).append(rn,category,title_td,std_no,regdate,hit);
@@ -213,12 +217,12 @@
           <table class="table table-hover">
             <thead class="thead-dark">
               <tr>
-                <th scope="col">순번</th>
-                <th scope="col">분류</th>
-                <th scope="col">제목</th>
-                <th scope="col">작성자</th>
-                <th scope="col">작성일</th>
-                <th scope="col">조회수</th>
+                <th scope="col" width="10%">순번</th>
+                <th scope="col" width="10%">분류</th>
+                <th scope="col" width="40%">제목</th>
+                <th scope="col" width="15%">작성자</th>
+                <th scope="col" width="15%">작성일</th>
+                <th scope="col" width="10%">조회수</th>
               </tr>
             </thead>
             <tbody class="tbody">

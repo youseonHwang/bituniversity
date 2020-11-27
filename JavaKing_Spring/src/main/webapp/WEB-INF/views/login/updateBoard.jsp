@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="EUC-KR"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -59,7 +59,6 @@
 		// 등록 버튼을 눌렀을 때 실행하는 동작----------------------------------------------------------------
 		$('#btn_update').click(function() {
 			var form_data = new FormData($('#update_form')[0])		
-			alert(form_data)
 			$.ajax({
 				url: "/login/updateBoard",
 				type:'POST',
@@ -284,7 +283,7 @@
 								<option value="${cl}">${cl}</option>
 							</c:forEach>
                         </select>
-                      </div>
+                       </div>
                     </div>
                     <!-- End Input -->
                   </div>
