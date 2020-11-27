@@ -37,7 +37,9 @@ public class InsertProfessorController {
 	
 	@RequestMapping("/admin/insertProfessor")
 	public void insertProfessor(HttpServletRequest request, ProfessorVo p) {
-		String path = request.getRealPath("professor");
+		String path = request.getRealPath("/professor");
+		System.out.println("path : >>>>>>>>>>>>>>>>" + path);
+		
 		MultipartFile uploadFile = p.getUploadFile();
 		String pro_fname = uploadFile.getOriginalFilename();
 	

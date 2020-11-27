@@ -33,97 +33,47 @@
  
 <style type="text/css">
 
-.reg_payment{
-	color : red;
-	font-weight : bold;
-	background-color: #bfbfbf;
-}
-
-#input-form {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	}
-
 </style>
-
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+	$("#btnAdd").click(function(){
 
-	$('#list').empty();
-
-	$.ajax("/admin/listRegfee",{success:function(arr){
+		var Check1 = $("#pro1").val();
+		var Check2 = $("#pro2").val();
+		var Check3 = $("#pro4").val();
+		var Check4 = $("#pro5").val();	
+		var Check5 = $("#inputGroupFile01").val();
 		
-		$.each(arr, function(row, item){
-		
-			var tr = $('<tr></tr>');
-			var reg_no = $("<td></td>").text(item.reg_no);
-			$(reg_no).attr({
-				width:80		
-			});
-			var std_no = $("<td></td>").text(item.std_no);
-			var std_name = $("<td></td>").text(item.std_name);
-			var reg_entfee = $("<td></td>").text(numberWithCommas(item.reg_entfee)); 
-			var reg_fee = $("<td></td>").text(numberWithCommas(item.reg_fee));  
-			
-				
-			$(tr).append(reg_no, std_no, std_name, reg_entfee, reg_fee);
-			$('#list').append(tr); 
+	    if(!Check1 || !Check2 || !Check3 || !Check4 || !Check5){
+	        alert("입력되지 않은 값이 존재합니다.");
+	        
+	      }else{
+			var form = new FormData(document.getElementById('pro'));
+			$.ajax({
+				url: "/admin/insertProfessor",
+				type : "post",
+				processData: false,
+				contentType: false,
+				data : form,
+				dataType: "json",
+				success : function(data) {
+					alert("ok");
+					
+				}});
+			$("input").val('');
+			$("#inputGroupFile01").val('');
+			$('#file_name').empty();
+			$('#file_name').append("파일 선택");
+	      }
 		});
-	}});
 
-
-	$(document).ready(function() {
-        $("#keyword").keyup(function() {
-            var k = $(this).val();
-            $("#reg_table > tbody > tr").hide();
-            var temp = $("#reg_table > tbody > tr > td:nth-child(5n+2):contains('" + k + "')");
-
-            $(temp).parent().show();
-        })
-    })
-
-     $("th").css("min-width","90px");
-
-        var varUA = navigator.userAgent.toLowerCase(); //userAgent 값 얻기
-        
-        if ( varUA.indexOf('android') > -1) {
-            //안드로이드
-        	$("table").css("font-size", "10px");
-			$("th").css("min-width", '40px');
-        } else if ( varUA.indexOf("iphone") > -1||varUA.indexOf("ipad") > -1||varUA.indexOf("ipod") > -1 ) {
-            //IOS
-        	$("table").css("font-size", "10px");
-			$("th").css("min-width", '40px');
-        }
-
- 
-        $("#addReg").click(function(){
-
-    			var data = $("#insertReg").serialize();
-    			$.ajax("/admin/insertRegister",{
-    				data:data,
-    				success:function(res){
-    					console.log(res);
-    					$("input").val('');
-    				},
-    				error:function(request, status, error){
-    					alert("(등록실패) 입력값을 확인하세요.");
-    				}		
-    			})	
-    	})
-		
+		$('#inputGroupFile01').change(function(){
+			$('#file_name').empty();
+			var filename = $('input[type=file]').val().replace(/.*(\/|\\)/, '');
+			$('#file_name').append(filename);
+		});
 });
-
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
-
-
-
 </script>
 
 </head>
@@ -144,7 +94,7 @@ function numberWithCommas(x) {
   <main id="content">
     <!-- Hero Section -->
     <div class="hanna space-2 space-3-top--lg bg-primary text-white text-center text-weight-bold">
-      <h1 class = "h1 hanna">등록금 관리</h1>
+      <h1 class = "h1 hanna">교수정보 관리</h1>
     </div>
     <!-- End Hero Section -->
 
@@ -152,132 +102,71 @@ function numberWithCommas(x) {
     <div class="container space-3-bottom--lg space-2-top">
       <div class="row">
         <div class="col-lg-9 order-lg-2 mb-9 mb-lg-0">
-        	
-        	<button type="button" id="btnAdd" class="btn btn-outline-primary"
-						data-toggle="modal" data-target="#addModal" >신규 등록</button>
-			<br>
-        
- 
-        	<div class="row bootstrap snippets bootdeys" id="property-list">
-        	
-				<div id="input-form" style="text-align: right;width: -webkit-fill-available;">
-				<b>학번검색 :</b> <input type="text" id="keyword" />
-				</div>
-			    <table class="table table-sm" style="text-align: center;" id="reg_table">
-			            <thead class="thead-dark">
-			              <tr>
-			                <th scope="col">등록번호</th>
-			                <th scope="col">학번</th>
-			                <th scope="col">이름</th>
-			                <th scope="col">등록금</th>
-			                <th scope="col">미납금액</th>
-			              </tr>
-			            </thead>
-			            <tbody id="list">
+        	<div class="row bootstrap snippets bootdeys" id="property-list"  >
 			
-			            </tbody>
-			          </table>
-			</div>
+			<form id="pro" class= "mx-auto">
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1" style="background-color: #e6f2ff; font-weight: bold;">교수번호 </span>
+				  </div>
+				  <input type="number" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="pro_no" id="pro1" />
+				</div>
+				
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1" style="background-color: #e6f2ff; font-weight: bold;">교수이름 </span>
+				  </div>
+				  <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="pro_name" id="pro2"/>
+				</div>
+			   
+			   <div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <label class="input-group-text" for="inputGroupSelect01" style="background-color: #e6f2ff; font-weight: bold;">학부</label>
+				  </div>
+				  <select class="custom-select" id="inputGroupSelect01" name="pro_type" id="pro3">
+				    <option value="인문학부">인문학부</option>
+				    <option value="사회경영학부">사회경영학부</option>
+				    <option value="공학부">공학부</option>
+				    <option value="문화예술학부">문화예술학부</option>
+				  </select>
+				</div>
+				
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1" style="background-color: #e6f2ff; font-weight: bold;">전공 </span>
+				  </div>
+				  <input type="text" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="pro_major" id="pro4"/>
+				</div>
+				
+				<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" id="basic-addon1" style="background-color: #e6f2ff; font-weight: bold;">이메일 </span>
+				  </div>
+				  <input type="email" class="form-control"  aria-label="Username" aria-describedby="basic-addon1" name="pro_email" id="pro5"/>
+				</div>
+			   
+			   	<div class="input-group mb-3">
+				  <div class="input-group-prepend">
+				    <span class="input-group-text" style="background-color: #e6f2ff; font-weight: bold;" >사진등록</span>
+				  </div>
+				  <div class="custom-file">
+				    <input type="file" class="custom-file-input" id="inputGroupFile01" name="uploadFile" />
+				    <label class="custom-file-label" for="inputGroupFile01" id="file_name">파일 선택</label>
+				  </div>
+				  <br>
+				</div>
+				
+				<div class="input-group mb-3" style="display: block;">
+		    		<button type="button" class="btn btn-primary btn-sm"  style="float: right;" id="btnAdd">등록</button>
+		   		</div>
+		   		
+				</form>	
+		</div>
         
-    
+        
+
           <!-- End Pagination -->
         </div>
-        
-        <!-- 등록금 등록 Modal -->
-		<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
-			aria-labelledby="myLargeModalLabel">
-			<div class="modal-dialog " role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h4 class="modal-title" id="myModalLabel">등록금 등록</h4>
-						<button type="button" class="close" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body">
-						<form class="js-validate" id="insertReg">
-							
-								<div class="col-sm-12 mb-3">
-									<div class="js-form-message">
-										<label class="h6 small d-block text-uppercase"> 학번
-											<span class="text-danger">*</span>
-										</label>
-
-										<div class="js-focus-state input-group form">
-											<input class="form-control form__input" type="number"
-												id="std_no" name="std_no" required placeholder="학번입력">
-										</div>
-									</div>
-								</div>
-
-								<div class="col-sm-12 mb-3">
-									<div class="js-form-message">
-										<label class="h6 small d-block text-uppercase"> 연도
-											<span class="text-danger">*</span>
-										</label>
-
-										<div class="js-focus-state input-group form">
-											<input class="form-control form__input" type="number"
-												id="reg_year" name="reg_year" required placeholder="연도입력">
-										</div>
-									</div>
-								</div>	
-
-								<div class="col-sm-12 mb-3">
-									<div class="js-form-message">
-										<label class="h6 small d-block text-uppercase"> 학년
-											<span class="text-danger">*</span>
-										</label>
-
-										<div class="js-focus-state input-group form">
-											<input class="form-control form__input" type="number"
-												id="reg_level" name="reg_level" required
-												placeholder="1/2/3/4">
-										</div>
-									</div>
-								</div>
-
-								<div class="col-sm-12 mb-3">
-									<div class="js-form-message">
-										<label class="h6 small d-block text-uppercase"> 학기
-											<span class="text-danger">*</span>
-										</label>
-
-										<div class="js-focus-state input-group form">
-											<input class="form-control form__input" type="number"
-												id="reg_semester" name="reg_semester" required placeholder="1/2">
-										</div>
-									</div>
-								</div>
-
-								<div class="col-sm-12 mb-3">
-									<div class="js-form-message">
-										<label class="h6 small d-block text-uppercase"> 등록금
-											<span class="text-danger">*</span>
-										</label>
-
-										<div class="js-focus-state input-group form">
-											<input class="form-control form__input" type="number"
-												id="reg_entfee" name="reg_entfee" required placeholder="금액입력">
-										</div>
-									</div>
-								</div>
-
-							<div class="text-right">
-								<button type="button"
-									class="btn btn-primary btn-sm btn-primary" id="addReg">등록</button>
-							</div>
-						</form>
-						<!-- End Hire Us Form -->
-
-					</div>
-
-				</div>
-			</div>
-		</div>
-		<!-- End Pagination -->
-
 
         <div class="col-lg-3 order-lg-1">
           <!-- ========== admin_leftBar_Categories 삽입 ========== -->
@@ -285,7 +174,6 @@ function numberWithCommas(x) {
 			 <!-- ========== END admin_leftBar_Categories 삽입 ========== -->
       </div>
     </div>
-    </div> 
     <!-- End News Blog Content -->
   </main>
   <!-- ========== END MAIN CONTENT ========== -->
