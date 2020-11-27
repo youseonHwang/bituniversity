@@ -17,20 +17,25 @@
 		round(avg(grade_getcredit),2) as average_grade_getcredit,
 		 round(avg(grade_score),2) as average_grade_score
 		from (select grade_no, grade_regcredit, grade_getcredit,
-		grade_score,grade_semester, grade_level, std_no, g.class_no,
-		to_char(class_startdate,'yyyy') as grade_year
-		 from class c, grade g
-		  where g.class_no=c.class_no and std_no=#{std_no}
-		and grade_level=#{max_grade_level} and grade_semester=#{max_grade_semester})
+		grade_score,grade_semester, grade_level, g.std_no, g.class_no,
+		to_char(classreg_date,'yyyy') as grade_year
+		 from classreg c, grade g
+		  where g.std_no=#{std_no} and g.std_no=c.std_no and g.class_no=c.class_no)
+		group by grade_year,grade_semester,grade_level order by grade_year,grade_semester
+	</select>
+	<select id="printAll" resultType="grade_vo">
+		select grade_semester, grade_level, to_char(class_startdate,'yyyy') as grade_year,
+		 grade_regcredit,grade_getcredit,grade_score 
+		 from class c, grade g where g.class_no=c.class_no and std_no=#{std_no}
 		group by grade_year,grade_semester,grade_level
 	</select>
 	<select id="detail" resultType="grade_vo">
 		select grade_no, grade_regcredit, grade_getcredit,
 		grade_score,grade_semester, grade_level,
-		std_no, g.class_no,to_char(class_startdate,'yyyy') grade_year, class_name,
-		class_type, grade_rank from class c, grade g
-		where g.class_no=c.class_no and std_no=#{std_no} and
-		to_char(class_startdate,'yyyy')=#{year}
+		g.std_no, g.class_no,to_char(classreg_date,'yyyy') grade_year, class_name,
+		class_type, grade_rank from classreg cr, grade g, class c
+		where g.class_no=cr.class_no and g.std_no=#{std_no} and g.std_no=cr.std_no and c.class_no=g.class_no 
+		and to_char(classreg_date,'yyyy')=#{year}
 		and grade_semester=#{semester} order by class_name
 	</select>
 	<select id="studentList" resultType="grade_vo">
