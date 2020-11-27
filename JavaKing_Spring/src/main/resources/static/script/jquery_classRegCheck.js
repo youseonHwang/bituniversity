@@ -39,7 +39,7 @@ $(function(){
 		var date = new Date()
 		var year = date.getFullYear() 
 		var semester = res.std_semester
-		var month = date.getMonth()
+		var month = date.getMonth()+1
 		var date = date.getDate()
 		
 		$("#spanYear").html(year)
