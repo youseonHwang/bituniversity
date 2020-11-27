@@ -6,6 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <!-- Title -->
 <title>:: 비트대학교 ::</title>
 
@@ -13,9 +14,12 @@
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="_csrf_parameter" content="${_csrf.parameterName}" />
+<meta name="_csrf_header" content="${_csrf.headerName}" />
+<meta name="_csrf" content="${_csrf.token}" />
 
 <!-- Favicon -->
-<link rel="shortcut icon" href="../../favicon.ico">
+<link rel="shortcut icon" href="../image/favicon.ico">
 
 <!-- Google Fonts -->
 <link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700"
@@ -35,6 +39,9 @@
 <script>
 window.onload = function(){
 	var csrf_token = "{{ csrf_token() }}";
+	const token = $("meta[name='_csrf']").attr("content");
+    const header = $("meta[name='_csrf_header']").attr("content");
+    const parameter = $("meta[name='_csrf_parameter']").attr("content");
 	
 	$.ajaxSetup({
         beforeSend: function(xhr, settings) {
@@ -44,12 +51,22 @@ window.onload = function(){
         }
     });
 
+	//document.getElementById("printArea").style.display="none";
+	//document.getElementById("printScope").style.display="none";
+	//document.getElementById("printDetail").style.display="none";
 	const tbody = document.getElementById("tbody");
+	
+	
 	
 	/*프린트 출력 함수*/
 	submit.addEventListener("click",function(e){
+		$(".printScope").css("display","inline-block");
+		$("#printAreaTitle").css("display","inline-block");
+	//	document.getElementsByClassName("printScope").style="display:inline-block";
+	//	document.getElementById("printDetail").style.display="inline-block";
 		document.body.innerHTML = printArea.innerHTML;
 		window.print();
+		$("#printAreaTitle").css("display","none");
 		location.reload();
 	});
 
@@ -57,25 +74,32 @@ window.onload = function(){
 	const detailList = document.querySelectorAll(".detail");
 	console.log(detailList);
 	for(let i=0; i<detailList.length; i++){
+		detail(detailList[i],0); // 0을주면 테이블에달기
+		
 		detailList[i].addEventListener("click",function(e){
 			e.preventDefault();
-			detail(e.target);
+			detail(e.target,1); // 1을주면 밑에 상세에 달기
 		})
 	}
 
+
+
 	/*년도와 학기를 매개변수로 ajax연결로 성적 상세정보를 가져온다*/
-	function detail(obj){
+	function detail(obj,check){
+		console.log("작동함!!");
 		const year = obj.getAttribute("year");
 		const semester = obj.getAttribute("semester");
-		
+		const idx = obj.getAttribute("idx");
+		console.log(year);
+		console.log(semester);
 		$.ajax({
-				url : "/login/detailGrade.do",
+				url : "/login/detailGrade.do?"+parameter+"="+token,
 				type : "POST",
 				data : {
 					"year":year, 
 					"semester":semester
 				},
-				beforeSend : function(xhr)
+				/*beforeSend : function(xhr)
 				  {
 				   //이거 안하면 403 error
 				   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
@@ -83,10 +107,15 @@ window.onload = function(){
 				   console.log($(token).attr("data"));
 				   console.log($(token).val());
 				   xhr.setRequestHeader($(token).attr("data"), $(token).val());
-				  },
+				  },*/
 				success : function(dlist){
 					console.log(dlist);
-					setDlist(dlist);			
+					if(check == 0 ){
+						setPrintTable(dlist,idx);
+					}
+					else{
+						setDlist(dlist);	
+					}		
 				},
 				error : function(){
 					alert("에러발생");
@@ -94,6 +123,35 @@ window.onload = function(){
 		})
 	};
 
+//	detail(tbody);
+
+	function setPrintTable(list,idx){
+		const myTbody = document.getElementById("tbody"+idx);
+		const firstTr = document.createElement("tr");
+		const firstTd ='<th width="30%">과목명</th>\
+						<th>이수</th>\
+						<th>수강학점</th>\
+						<th>점수</th>\
+						<th>백분율점수</th>\
+						<th>등급</th>';
+			firstTr.innerHTML = firstTd;
+			myTbody.append(firstTr);
+		for(let i in list){
+			const d = list[i];
+			const tr = document.createElement("tr");
+			let str = '<td name="class_name">'+d.class_name+'</td>\
+			<td name="class_type">'+d.class_type+'</td>\
+			<td name="grade_regcredit">'+d.grade_regcredit+'</td>\
+			<td name="grade_getcredit">'+d.grade_getcredit+'</td>\
+			<td name="grade_score">'+d.grade_score+'</td>\
+			<td name="grade_rank">'+d.grade_rank+'</td>';
+			tr.innerHTML = str;
+			myTbody.append(tr);
+			$()
+			
+		}
+	}
+	
 	/*성적 상세정보 담긴 동적노드 생성*/
 	function setDlist(list){
 		tbody.innerHTML = '';
@@ -149,20 +207,23 @@ window.onload = function(){
 						<h4>년도·학기별</h4>
 						<span style="font-size: small;">* 구분항목 클릭시 해당 년도-학기의 성적
 							상세정보 열람 가능</span>
+							
+							<div id="printArea">
+							<h4 id = "printAreaTitle" style="display:none;">전체학기 성적조회</h4>
 						<table class="table">
 							<thead class="thead-dark">
 								<tr>
 									<th scope="col">구분</th>
 									<th scope="col">학년</th>
-									<th scope="col">취득학점</th>
+									<th scope="col">총 취득학점</th>
 									<th scope="col">평점평균</th>
 									<th scope="col">백분율</th>
+									<th></th>
 								</tr>
 							</thead>
-							<tbody>
-								<c:forEach var="g" items="${grade_list}">
+								<c:forEach var="g" items="${grade_list}" varStatus="idx" begin="0" step="1" >
 									<tr>
-										<th scope="row"><a href='' class="detail"
+										<th  scope="row"><a href='' class="detail" idx="${idx.index }"
 											style="font-weight: bold; color: blue;"
 											year="${g.grade_year }" semester="${g.grade_semester}">${g.grade_year }-${g.grade_semester}</a></th>
 										<td>${g.grade_level }</td>
@@ -170,15 +231,17 @@ window.onload = function(){
 										<td>${g.average_grade_getcredit }</td>
 										<td>${g.average_grade_score }</td>
 									</tr>
+							<tr id="tbody${idx.index}" class="printScope w-100" style="display:none;">
+								
+							</tr>				
 								</c:forEach>
-							</tbody>
+
 						</table>
+						</div>
 						
-						<!--<br><span class="u-label u-label--sm u-label--purple mb-3">상세정보</span>  -->
-						<br>
 						<h4>상세정보</h4>
 						
-						<div id="printArea">
+						
 						<table class="table">
 							<thead class="thead-dark">
 								<tr>
@@ -190,10 +253,11 @@ window.onload = function(){
 									<th>등급</th>
 								</tr>
 							</thead>
-							<tbody id="tbody">
+							<tbody id="tbody" class="mola" year="${g.grade_year }" semester="${g.grade_semester}">
 							</tbody>
 						</table>
-						</div>
+						
+						
 					</form>
 
 					<!-- End Pagination -->

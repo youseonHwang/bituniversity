@@ -35,7 +35,18 @@ public class GradeController {
 		int std_no = (int)request.getSession().getAttribute("std_no");
 		List<GradeVo> list = dao.listAll(std_no);
 		model.addAttribute("grade_list",list);
-		request.getSession().setAttribute("grade_list",list);
+	//	request.getSession().setAttribute("grade_list",list);
+	}
+	
+	@PostMapping(value="/login/printGrade.do")
+	public void printAll(HttpServletRequest request,Model model, String year, int semester) {
+		int std_no = (int)request.getSession().getAttribute("std_no");
+		HashMap map = new HashMap();
+		map.put("year", year);
+		map.put("semester", semester);
+		map.put("std_no", std_no);
+		List<GradeVo> list = dao.detail(map);
+		model.addAttribute("detail_list",list);
 	}
 	
 	@PostMapping(value = "/login/detailGrade.do", produces = "Application/json; charset=utf-8")
@@ -48,9 +59,10 @@ public class GradeController {
 		map.put("year", year);
 		map.put("semester", semester);
 		map.put("std_no", std_no);
+		List<GradeVo> list = dao.detail(map);
 		Gson gson = new Gson();
 //		model.addAttribute("dlist",dao.detail(map));
-		return gson.toJson(dao.detail(map));
+		return gson.toJson(list);
 	}
 	
 	@RequestMapping(value="/admin/adminGrade.do", method=RequestMethod.GET)
