@@ -33,17 +33,6 @@
  
 <style type="text/css">
 
-.reg_payment{
-	color : red;
-	font-weight : bold;
-	background-color: #bfbfbf;
-}
-
-#input-form {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	}
-
 </style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -106,6 +95,7 @@ $(function(){
     				success:function(res){
     					console.log(res);
     					$("input").val('');
+    					location.reload(true);
     				},
     				error:function(request, status, error){
     					alert("(등록실패) 입력값을 확인하세요.");

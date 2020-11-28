@@ -270,29 +270,11 @@
                   </li>
                   <!-- Classic -->
 
-                  <!-- List -->
-                  <li class="dropdown-item hs-has-sub-menu">
-                    <a id="navLinkBlogList" class="nav-link u-header__sub-menu-nav-link"
-                       aria-haspopup="true"
-                       aria-expanded="false"
-                       aria-controls="navSubmenuBlogList">
-                      등록금관리
-                      <i class="fa fa-angle-right u-header__sub-menu-nav-link-icon"></i>
-                    </a>
-
-                    <!-- Submenu (level 2) -->
-                    <ul id="navSubmenuBlogList" class="hs-sub-menu list-unstyled u-header__sub-menu u-header__sub-menu-offset" style="min-width: 220px;"
-                        aria-labelledby="navLinkBlogList">
-                      <li class="dropdown-item u-header__sub-menu-list-item">
-                        <a class="nav-link u-header__sub-menu-nav-link" href="/admin/insertRegister.do">등록금등록</a>
-                      </li>
-                      <li class="dropdown-item u-header__sub-menu-list-item">
-                        <a class="nav-link u-header__sub-menu-nav-link" href="/admin/listRegfee.do">등록금미납관리</a>
-                      </li>                      
-                    </ul>
-                    <!-- End Submenu (level 2) -->
+                   <!-- Classic -->
+                  <li class="dropdown-item u-header__sub-menu-list-item py-0">
+                    <a class="nav-link u-header__sub-menu-nav-link" href="/admin/listRegfee.do">등록금관리</a>
                   </li>
-                  <!-- List -->
+                  <!-- Classic -->
 
                   <!-- Classic -->
                   <li class="dropdown-item u-header__sub-menu-list-item py-0">

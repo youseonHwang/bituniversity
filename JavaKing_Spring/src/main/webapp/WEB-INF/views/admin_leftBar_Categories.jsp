@@ -23,9 +23,8 @@
 	      </ul>
 	   </li>
 	   <li class='active has-sub'><a>등록금</a>
-	      <ul>
-	         <li><a href='/admin/insertRegister.do'>등록금 등록</a></li>         
-	         <li><a href='/admin/listRegfee.do'>등록금 미납관리</a></li>         
+	      <ul>         
+	         <li><a href='/admin/listRegfee.do'>등록금 관리</a></li>         
 	      </ul>
 	   </li>
 	   <li class='active has-sub'><a>강의</a>

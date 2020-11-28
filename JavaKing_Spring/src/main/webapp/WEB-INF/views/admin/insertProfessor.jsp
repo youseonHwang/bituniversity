@@ -13,6 +13,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   
+  <meta id="_csrf" name="_csrf" content="${_csrf.token}" />
+  <meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}" />
+  
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
   <!-- Favicon -->
@@ -33,22 +36,17 @@
  
 <style type="text/css">
 
-.reg_payment{
-	color : red;
-	font-weight : bold;
-	background-color: #bfbfbf;
-}
-
-#input-form {
-	margin-top: 10px;
-	margin-bottom: 10px;
-	}
-
 </style>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script type="text/javascript">
 $(function(){
+
+	var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    $(document).ajaxSend(function(e, xhr, options) {
+        xhr.setRequestHeader(header, token);
+    });
 
 	$('#list').empty();
 
@@ -107,7 +105,7 @@ $(function(){
     	        alert("학부를 선택해주세요.");
     	        
     	      }else{
-    			var form = new FormData(document.getElementById('insertPro'));
+     			var form = new FormData(document.getElementById('insertPro'));
     			
     			$.ajax({
     				url: "/admin/insertProfessor",
@@ -117,16 +115,16 @@ $(function(){
     				data : form,
     				dataType: "json",
     				success : function(data) {
-    					alert("ok");
+    					$("input").val('');
+    	     			$("#inputGroupFile01").val('');
+    	     			$('#file_name').empty();
+    	     			$('#file_name').append("파일 선택");
+    	     			$('#pro_type').prop('selectedIndex',0);
+    	     			location.reload(true);
     				},
-    				errㅜ서or:function(request, status, error){
+    				error:function(request, status, error){
     					alert("(등록실패) 입력값을 확인하세요.");
     				}});
-    			$("input").val('');
-    			$("#inputGroupFile01").val('');
-    			$('#file_name').empty();
-    			$('#file_name').append("파일 선택");
-    			$('#pro_type').prop('selectedIndex',0);
         		}
     		});
 
@@ -210,7 +208,7 @@ $(function(){
 						</button>
 					</div>
 					<div class="modal-body">
-						<form class="js-validate" id="insertPro">
+						<form class="js-validate" id="insertPro" enctype="multipart/form-data">
 							
 								<div class="col-sm-12 mb-3">
 									<div class="js-form-message">
