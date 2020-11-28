@@ -42,7 +42,8 @@ window.onload = function(){
 	const token = $("meta[name='_csrf']").attr("content");
     const header = $("meta[name='_csrf_header']").attr("content");
     const parameter = $("meta[name='_csrf_parameter']").attr("content");
-	
+
+	/*시큐리티 토큰 설정*/
 	$.ajaxSetup({
         beforeSend: function(xhr, settings) {
             if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -50,13 +51,8 @@ window.onload = function(){
             }
         }
     });
-
-	//document.getElementById("printArea").style.display="none";
-	//document.getElementById("printScope").style.display="none";
-	//document.getElementById("printDetail").style.display="none";
+    
 	const tbody = document.getElementById("tbody");
-	
-	
 	
 	/*프린트 출력 함수*/
 	submit.addEventListener("click",function(e){
@@ -81,8 +77,6 @@ window.onload = function(){
 			detail(e.target,1); // 1을주면 밑에 상세에 달기
 		})
 	}
-
-
 
 	/*년도와 학기를 매개변수로 ajax연결로 성적 상세정보를 가져온다*/
 	function detail(obj,check){
@@ -122,22 +116,32 @@ window.onload = function(){
 				}
 		})
 	};
-
-//	detail(tbody);
-
+	
+	/*프린트 출력시 성적 상세정보 담긴 동적노드 생성*/
 	function setPrintTable(list,idx){
 		const myTbody = document.getElementById("tbody"+idx);
 		const firstTr = document.createElement("tr");
 		const firstTd ='<th width="30%">과목명</th>\
-						<th>이수</th>\
+						<th>이수구분</th>\
 						<th>수강학점</th>\
 						<th>점수</th>\
 						<th>백분율점수</th>\
 						<th>등급</th>';
-			firstTr.innerHTML = firstTd;
-			myTbody.append(firstTr);
+		firstTr.innerHTML = firstTd;
+		myTbody.append(firstTr);
 		for(let i in list){
 			const d = list[i];
+			if (d.class_type=='0'){
+				d.class_type='전공필수'
+			}else if(d.class_type=='1'){
+				d.class_type='전공선택'
+			}else if(d.class_type=='10'){
+				d.class_type='교양필수'
+			}else if(d.class_type=='11'){
+				d.class_type='교양선택'
+			}else{
+				d.class_type='일반선택'
+			}
 			const tr = document.createElement("tr");
 			let str = '<td name="class_name">'+d.class_name+'</td>\
 			<td name="class_type">'+d.class_type+'</td>\
@@ -147,8 +151,6 @@ window.onload = function(){
 			<td name="grade_rank">'+d.grade_rank+'</td>';
 			tr.innerHTML = str;
 			myTbody.append(tr);
-			$()
-			
 		}
 	}
 	
@@ -157,6 +159,17 @@ window.onload = function(){
 		tbody.innerHTML = '';
 		for(let i in list){
 			const d = list[i];
+			if (d.class_type=='0'){
+				d.class_type='전공필수'
+			}else if(d.class_type=='1'){
+				d.class_type='전공선택'
+			}else if(d.class_type=='10'){
+				d.class_type='교양필수'
+			}else if(d.class_type=='11'){
+				d.class_type='교양선택'
+			}else{
+				d.class_type='일반선택'
+			}
 			const tr = document.createElement("tr");
 			let str = '<td name="class_name">'+d.class_name+'</td>\
 			<td name="class_type">'+d.class_type+'</td>\
@@ -207,7 +220,6 @@ window.onload = function(){
 						<h4>년도·학기별</h4>
 						<span style="font-size: small;">* 구분항목 클릭시 해당 년도-학기의 성적
 							상세정보 열람 가능</span>
-							
 							<div id="printArea">
 							<h4 id = "printAreaTitle" style="display:none;">전체학기 성적조회</h4>
 						<table class="table">
@@ -232,21 +244,16 @@ window.onload = function(){
 										<td>${g.average_grade_score }</td>
 									</tr>
 							<tr id="tbody${idx.index}" class="printScope w-100" style="display:none;">
-								
 							</tr>				
 								</c:forEach>
-
 						</table>
 						</div>
-						
 						<h4>상세정보</h4>
-						
-						
 						<table class="table">
 							<thead class="thead-dark">
 								<tr>
 									<th width="30%">과목명</th>
-									<th>이수</th>
+									<th>이수구분</th>
 									<th>수강학점</th>
 									<th>점수</th>
 									<th>백분율점수</th>
@@ -256,13 +263,9 @@ window.onload = function(){
 							<tbody id="tbody" class="mola" year="${g.grade_year }" semester="${g.grade_semester}">
 							</tbody>
 						</table>
-						
-						
 					</form>
-
 					<!-- End Pagination -->
 				</div>
-
 				<div class="col-lg-3 order-lg-1">
 					<div class="portlet light profile-sidebar-portlet bordered">
 						<div class="card-body user-profile-card mb-3">

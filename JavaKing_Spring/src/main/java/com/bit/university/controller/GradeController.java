@@ -38,30 +38,16 @@ public class GradeController {
 	//	request.getSession().setAttribute("grade_list",list);
 	}
 	
-	@PostMapping(value="/login/printGrade.do")
-	public void printAll(HttpServletRequest request,Model model, String year, int semester) {
-		int std_no = (int)request.getSession().getAttribute("std_no");
-		HashMap map = new HashMap();
-		map.put("year", year);
-		map.put("semester", semester);
-		map.put("std_no", std_no);
-		List<GradeVo> list = dao.detail(map);
-		model.addAttribute("detail_list",list);
-	}
-	
 	@PostMapping(value = "/login/detailGrade.do", produces = "Application/json; charset=utf-8")
 	@ResponseBody
 	public String detail(HttpServletRequest request, String year, int semester) {
 		int std_no = (int)request.getSession().getAttribute("std_no");
-//		String year = request.getParameter("year");
-//		int semester = Integer.parseInt(request.getParameter("semester"));
 		HashMap map = new HashMap();
 		map.put("year", year);
 		map.put("semester", semester);
 		map.put("std_no", std_no);
 		List<GradeVo> list = dao.detail(map);
 		Gson gson = new Gson();
-//		model.addAttribute("dlist",dao.detail(map));
 		return gson.toJson(list);
 	}
 	
@@ -109,7 +95,6 @@ public class GradeController {
 	@RequestMapping(value="/admin/updateGrade.do", method=RequestMethod.POST)
 	@ResponseBody
 	public String updateSubmit(GradeVo vo) {
-	//	ModelAndView mav = new ModelAndView("redirect:/login/updateGrade.do");
 		int score = vo.getGrade_score();
 		if(score>=95) {			vo.setGrade_rank("A+");}
 		else if(score>=90) {	vo.setGrade_rank("A");}
@@ -123,11 +108,6 @@ public class GradeController {
 		
 		System.out.println(vo);
 		int re = dao.update(vo);
-//		if(re <= 0) {
-//			mav.addObject("msg", "수정에 실패하였습니다.");
-//			mav.setViewName("error");
-//		}
-//		return mav;
 		
 		return Integer.toString(re);
 	}
@@ -150,7 +130,6 @@ public class GradeController {
 		Gson gson = new Gson();
 		return gson.toJson(dao.getStdList(class_no));
 	}
-	
 	
 	@PostMapping(value="/admin/getNextNoGrade.do", produces = "Application/json; charset=utf-8")
 	@ResponseBody

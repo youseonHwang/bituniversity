@@ -315,7 +315,6 @@ window.onload = function(){
 			   xhr.setRequestHeader($(token).attr("data"), $(token).val());
 			  },
 			success : function(no){
-			
 				console.log(no);
 				grade_no.value=no;
 			},
@@ -350,6 +349,7 @@ window.onload = function(){
 				if(re=='1'){
 					alert("등록 성공!");
 					insertForm.reset();
+					$('#addModal').modal('hide');
 				}else{
 					alert("등록 오류!");
 				}

@@ -45,7 +45,6 @@ public class CalendarController {
 	@GetMapping(value = "/admin/adminLoadCalendar.do", produces = "Application/json; charset=utf-8")
 	@ResponseBody
 	public String adminListAll() {
-		
 		Gson gson = new Gson();
 		return gson.toJson(dao.listAll());
 	}
@@ -83,8 +82,6 @@ public class CalendarController {
 		Gson gson = new Gson();
 		return gson.toJson(dao.getNextNo());
 	}
-	
-	
 	
 	@PostMapping(value = "/admin/searchCalendar.do", produces = "Application/json; charset=utf-8")
 	@ResponseBody
