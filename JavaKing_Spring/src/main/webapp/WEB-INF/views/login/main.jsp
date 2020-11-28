@@ -1,4 +1,4 @@
-profile<%@ page language="java" contentType="text/html; charset=UTF-8"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -289,7 +289,12 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
 
         <!-- Featured Job Item  -->
         <div class="card shadow-sm border-0 mb-4 px-4 col-sm-6 col-lg-7">
-          <h3 class="h5 mb-5 mt-4"><a class="font-weight-bold" href="/login/listBoard.do?board_boardno=100"><i class="fas fa-exclamation-circle text-primary"></i>&nbsp;&nbsp;공지사항</a></h3>
+          <h3 class="h5 mb-5 mt-4">
+	          <a class="font-weight-bold" href="/login/listBoard.do?board_boardno=100">
+		          <i class="fas fa-exclamation-circle text-primary"></i>
+		          &nbsp;&nbsp;공지사항
+	          </a>
+          </h3>
           <div class="card-body align-items-center py-0 px-0">
           <c:forEach var="i" items="${main_notice }" begin="0" end="4">
 			<c:set var = "bt" value ="${i.board_title }"/>
@@ -306,7 +311,8 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
           </div>
           <div class="py-3 text-muted d-md-flex justify-content-between align-items-center mx-0 px-0">
             <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=100">
-              더보기&nbsp;<i class="fas fa-arrow-right"></i>
+              더보기&nbsp;
+              <i class="fas fa-arrow-right"></i>
             </a>
           </div>
         </div>
@@ -316,7 +322,12 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
         <div class="col-sm-6 col-lg-4 mb-4">
           <div class="card border-0 shadow-sm h-100 px-4">
             <div class="card-body py-0 px-0">
-              <h3 class="h5 mb-5 mt-4"><i class="fas fa-hand-holding-usd text-primary"></i><a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category='삽니다'">&nbsp;&nbsp;삽니다</a></h3>
+              <h3 class="h5 mb-5 mt-4">
+	              <a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category=삽니다">
+		              <i class="fas fa-hand-holding-usd text-primary"></i>
+		              &nbsp;&nbsp;삽니다
+		          </a>
+              </h3>
             </div>
             <div class="card-body align-items-center py-0 px-0">
             	<c:forEach var="i" items="${main_flee_buy }" begin="0" end="3">
@@ -333,8 +344,9 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
 				</c:forEach>
             </div>
             <div class="py-3 text-muted d-md-flex justify-content-between align-items-center mx-0 px-0">
-              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category='삽니다'">
-                더보기&nbsp;<i class="fas fa-arrow-right"></i>
+              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category=삽니다">
+                더보기&nbsp;
+                <i class="fas fa-arrow-right"></i>
               </a>
             </div>  
           </div>
@@ -345,7 +357,12 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
         <div class="col-sm-6 col-lg-4 mb-4">
           <div class="card border-0 shadow-sm h-100 px-4">
             <div class="card-body py-0 px-0">
-              <h3 class="h5 mb-5 mt-4 font-weight-bold"><i class="fas fa-dolly text-primary"></i><a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category='팝니다'">&nbsp;&nbsp;팝니다</a></h3>
+              <h3 class="h5 mb-5 mt-4 font-weight-bold">
+	              <a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category=팝니다">
+		              <i class="fas fa-dolly text-primary"></i>
+		              &nbsp;&nbsp;팝니다
+	              </a>
+              </h3>
             </div>
             <div class="card-body align-items-center py-0 px-0">
               <c:forEach var="i" items="${main_flee_sell }" begin="0" end="3">
@@ -362,7 +379,7 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
 				</c:forEach>
             </div>
             <div class="py-3 text-muted d-md-flex justify-content-between align-items-center mx-0 px-0">
-              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category='팝니다'">
+              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category=팝니다">
                 더보기&nbsp;<i class="fas fa-arrow-right"></i>
               </a>
             </div>
@@ -374,7 +391,11 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
         <div class="col-sm-6 col-lg-4 mb-4">
           <div class="card border-0 shadow-sm h-100 px-4">
             <div class="card-body py-0 px-0">
-              <h3 class="h5 mb-5 mt-4 font-weight-bold"><i class="fas fa-list-ol text-primary"></i><a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category='자유게시판'">&nbsp;&nbsp;자유게시판</a></h3>  
+              <h3 class="h5 mb-5 mt-4 font-weight-bold">
+	              <a class="font-weight-bold" href="/login/listBoard.do?board_boardno=300&board_category=자유게시판">
+	              <i class="fas fa-list-ol text-primary"></i>
+	              &nbsp;&nbsp;자유게시판</a>
+              </h3>  
             </div>
             <div class="card-body align-items-center py-0 px-0">
               <c:forEach var="i" items="${main_freeboard }" begin="0" end="3">
@@ -391,7 +412,7 @@ profile<%@ page language="java" contentType="text/html; charset=UTF-8"
 				</c:forEach>
             </div>
             <div class="py-3 text-muted d-md-flex justify-content-between align-items-center mx-0 px-0">
-              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category='자유게시판'">
+              <a class="d-flex align-items-center font-weight-bold text-right ml-auto" href="/login/listBoard.do?board_boardno=300&board_category=자유게시판">
                 더보기&nbsp;<i class="fas fa-arrow-right"></i>
               </a>
             </div>
