@@ -4,6 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <properties resource="com/bit/university/db/db.properties"/>
+  <settings>
+  	<setting name="jdbcTypeForNull" value="NULL" />
+  </settings>
   <typeAliases>
   	<typeAlias type="com.bit.university.vo.StudentVo" alias="student_vo"/>
   	<typeAlias type="com.bit.university.vo.RegisterVo" alias="register_vo"/>

@@ -98,22 +98,30 @@
               }]'>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
-                <img class="mx-auto banners" src="../image/banner1.png" >
+	            <a href="/login/detailBoard.do?board_no=229">
+	              <img class="mx-auto banners" src="../image/banner1.png" >
+	            </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
-                <img class="mx-auto banners" src="../image/banner2.png" >
+              <a href="/login/detailBoard.do?board_no=227">
+               	<img class="mx-auto banners" src="../image/banner2.png" >
+              </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
+              <a href="/login/detailBoard.do?board_no=226">
                 <img class="mx-auto banners" src="../image/banner3.png">
+              </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
+              <a href="/login/detailBoard.do?board_no=129">
                 <img class="mx-auto banners" src="../image/banner4.png">
+              </a>
               </div>
             </div>
           </div>
