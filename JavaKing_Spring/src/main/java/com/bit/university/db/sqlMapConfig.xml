@@ -21,7 +21,6 @@
   	<typeAlias type="com.bit.university.vo.MajorVo" alias="major_vo"/>	
   	<typeAlias type="com.bit.university.vo.CalendarVo" alias="calendar_vo"/>
   	<typeAlias type="com.bit.university.vo.StudyVo" alias="study_vo"/>
-
   </typeAliases>
   <environments default="development">
     <environment id="development">
