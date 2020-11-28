@@ -190,9 +190,9 @@
 		                  var row = $('<div class="row justify-content-center"></div>');
 		                  var modal_image;
 		                     if(item.study_fname !=null) { //파일이 있으면
-		                        modal_image= $('<img class="img-thumbnail mb-2" src="../image/'+item.study_fname+'" alt="Responsive image" width="180px" height="180px"/>')
+		                        modal_image= $('<img class="img-thumbnail mb-2 w-60 h-50" src="../image/'+item.study_fname+'"/>')
 		                     } else {
-		                        modal_image= $('<img class="img-thumbnail mb-2" src="../../image/study.jpg" alt="Responsive image" width="60%" height="60%"/>')
+		                        modal_image= $('<img class="img-thumbnail mb-2 w-60 h-50" src="../../image/study.jpg"/>')
 		                     }
 		                     var w = $('<div class="w-100"></div>');
 		                     var str = item.study_content;
@@ -303,7 +303,6 @@
 
 			var data = {study_no: study_no};
 
-			alert(study_no);
 
 			$.ajax({url:"/login/StudyApply", data:data, success: function(res){
 				if(res == 1) {
@@ -340,9 +339,6 @@
 			var scategory = $('input:checked').val();
 			if(scategory==null) {scategory = 0};
 
-			alert(search);
-			alert(area);
-			alert(scategory);
 
 			$('#study_list_div').empty(); //검색어가 있을 경우엔 현재의 리스트를 모두 지우고  검색
 

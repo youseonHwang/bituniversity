@@ -19,7 +19,7 @@
 				from (select * from study ]]>
 				
 					 <!-- 검색어 지역 카테고리넘버 다 있는 경우 -->
-					<if test="!search.equals('') and search!=null and area!=null and !area.equals('') and scategory_no lte 0">
+					<if test="search!=null and !search.equals('') and area!=null and !area.equals('') and scategory_no lte 0">
 				      where study_title like '%'||'${search}'||'%' or study_content like '%'||'${search}'||'%' 
 				      and study_area like '%'||'${area}'||'%' and scategory_no = #{scategory_no}
 				     </if>
