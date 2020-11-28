@@ -80,10 +80,11 @@ public class SuccessHandler implements AuthenticationSuccessHandler {
 			session.setAttribute("std_name", s_vo.getStd_name());
 			session.setAttribute("std_major", s_vo.getStd_major());
 			session.setAttribute("std_email", s_vo.getStd_email());
-			session.setAttribute("std_semester", s_vo.getStd_semester() + "학기");
-			session.setAttribute("std_level", s_vo.getStd_level() + "학년");
+			session.setAttribute("std_semester", s_vo.getStd_semester());
+			session.setAttribute("std_level", s_vo.getStd_level());
 			session.setAttribute("major_name", m_dao.getMajorName(s_vo.getStd_major()));
 			session.setAttribute("std_fname", s_vo.getStd_fname());
+			session.setAttribute("std_status", s_vo.getStd_status());
 		}
 
 		// 메인페이지로 이동
