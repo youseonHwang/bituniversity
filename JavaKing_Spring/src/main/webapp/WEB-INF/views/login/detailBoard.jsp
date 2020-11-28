@@ -104,6 +104,20 @@
 					} else{
 						$('#std_no').html('익명');
 					}
+
+					// 삽니다 팝니다 게시판의 경우 image나오게 하기
+					if(b_vo_list.board_category=='삽니다' || b_vo_list.board_category=='팝니다'){
+						// 첨부파일이 있는 경우에만 나오게 하기
+						if(b_vo_list.board_fname!=null && b_vo_list.board_fname.equals('')) {
+							$('#board_image').attr('src','../image/'+b_vo_list.board_fname);
+						} else{
+							$('#board_image_div').remove();
+							$('#board_image').remove();
+						}
+					} else{
+						$('#board_image_div').remove();
+						$('#board_image').remove();
+					}
 					
 					$('#board_title').html(b_vo_list.board_title)
 					$('#board_content').html(b_vo_list.board_content)
@@ -426,7 +440,9 @@
           </div>
 
           <hr>
-
+		  <div style="text-align : center;" id="board_image_div">
+			<img class="w-60 h-60" id="board_image">
+		  </div>
           <!-- Post Content -->
           <p class="lead" id="board_content" style="white-space: pre-line;"></p>
 
