@@ -176,12 +176,9 @@
              			<h5 class="h5 mb-0"><i class="far fa-id-card text-primary"></i>&nbsp;&nbsp;&nbsp;${std_no }</h5>
               			<hr class = "my-2">
               			<h5 class="h5 mb-0 pb-1"><i class="fas fa-graduation-cap text-primary"></i>
-	              			&nbsp;&nbsp;${major_name }
-	              			<c:if test = "${acc_id !='관리자'}">과</c:if>
-	              			&nbsp;${std_level}
-	              			<c:if test = "${acc_id !='관리자'}">학년</c:if>
-	              			&nbsp;${std_semester }
-	              			<c:if test = "${acc_id !='관리자'}">학기</c:if>
+	              			&nbsp;&nbsp;${major_name }<c:if test = "${acc_id !='관리자'}">과</c:if>
+	              			&nbsp;${std_level}<c:if test = "${acc_id !='관리자'}">학년</c:if>
+	              			&nbsp;${std_semester }<c:if test = "${acc_id !='관리자'}">학기</c:if>
               			</h5>
             		</div>
             		<div class="card-footer text-muted d-md-flex justify-content-between align-items-center mx-4 px-0">
