@@ -58,11 +58,13 @@ window.onload = function(){
 	submit.addEventListener("click",function(e){
 		$(".printScope").css("display","inline-block");
 		$("#printAreaTitle").css("display","inline-block");
+		$("#printAreaEnd").css("display","block");
 	//	document.getElementsByClassName("printScope").style="display:inline-block";
 	//	document.getElementById("printDetail").style.display="inline-block";
 		document.body.innerHTML = printArea.innerHTML;
 		window.print();
 		$("#printAreaTitle").css("display","none");
+		$("#printAreaEnd").css("display","none");
 		location.reload();
 	});
 
@@ -221,7 +223,8 @@ window.onload = function(){
 						<span style="font-size: small;">* 구분항목 클릭시 해당 년도-학기의 성적
 							상세정보 열람 가능</span>
 							<div id="printArea">
-							<h4 id = "printAreaTitle" style="display:none;">전체학기 성적조회</h4>
+							<div id="printTable">
+							<h4 id = "printAreaTitle" style="display:none;" class="text-center mx-auto">전체학기 성적조회</h4>
 						<table class="table">
 							<thead class="thead-dark">
 								<tr>
@@ -247,6 +250,13 @@ window.onload = function(){
 							</tr>				
 								</c:forEach>
 						</table>
+						</div><br><br>
+						<div id = "printAreaEnd" style="display:none; text-align:center;">
+							<p>위의 사실을 증명함.</p>
+							<p>2020년 12월 1일</p>
+							<h2>비 트 대 학 교 교 무 처 장</h2>
+							<img src="../image/bitStamp.png" width="50" height="50">
+						</div>
 						</div>
 						<h4>상세정보</h4>
 						<table class="table">
