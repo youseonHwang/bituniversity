@@ -108,7 +108,7 @@
 					// 삽니다 팝니다 게시판의 경우 image나오게 하기
 					if(b_vo_list.board_category=='삽니다' || b_vo_list.board_category=='팝니다'){
 						// 첨부파일이 있는 경우에만 나오게 하기
-						if(b_vo_list.board_fname!=null && b_vo_list.board_fname.equals('')) {
+						if(b_vo_list.board_fname!=null) {
 							$('#board_image').attr('src','../image/'+b_vo_list.board_fname);
 						} else{
 							$('#board_image_div').remove();
