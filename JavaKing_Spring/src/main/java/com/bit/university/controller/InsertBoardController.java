@@ -17,7 +17,7 @@ import com.bit.university.dao.BoardDao;
 import com.bit.university.vo.BoardVo;
 
 @Controller
-public class insertBoardController {
+public class InsertBoardController {
 	
 	@Autowired
 	private BoardDao b_dao;
