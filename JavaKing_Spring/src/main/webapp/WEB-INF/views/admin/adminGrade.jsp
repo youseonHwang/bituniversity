@@ -11,29 +11,20 @@
 
 <!-- Required Meta Tags Always Come First -->
 <meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
 <!-- Favicon -->
 <link rel="shortcut icon" href="../../favicon.ico">
 
 <!-- Google Fonts -->
-<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-	rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 
 <!-- CSS Implementing Plugins -->
-<link rel="stylesheet"
-	href="../../assets/vendor/font-awesome/css/all.min.css">
-<link rel="stylesheet"
-	href="../../assets/vendor/hs-megamenu/src/hs.megamenu.css">
-<link rel="stylesheet"
-	href="../../assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
-<link rel="stylesheet"
-	href="../../assets/vendor/custombox/dist/custombox.min.css">
-<link rel="stylesheet"
-	href="../../assets/vendor/animate.css/animate.min.css">
+<link rel="stylesheet" href="../../assets/vendor/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="../../assets/vendor/hs-megamenu/src/hs.megamenu.css">
+<link rel="stylesheet" href="../../assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+<link rel="stylesheet" href="../../assets/vendor/custombox/dist/custombox.min.css">
+<link rel="stylesheet" href="../../assets/vendor/animate.css/animate.min.css">
 
 <!-- CSS Space Template -->
 <link rel="stylesheet" href="../../assets/css/theme.css">
@@ -63,8 +54,6 @@ window.onload = function(){
             }
         }
     });
-	
-
 	
 	//객체(노드) 자체를 갖고온다
 	const insertForm = document.getElementById("insertForm");
@@ -104,7 +93,6 @@ window.onload = function(){
 	search.addEventListener("click",function(e){
 		classList();
 	});
-	
 
 	/*년도,학기를 매개변수로 강의정보 ajax연결 통해 가져오는 함수 detailClassController 사용*/
 	function classList(){
@@ -123,7 +111,6 @@ window.onload = function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -214,7 +201,6 @@ window.onload = function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -307,7 +293,6 @@ window.onload = function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -336,7 +321,6 @@ window.onload = function(){
 			data:formData,
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -369,9 +353,7 @@ window.onload = function(){
 			url:"/admin/updateGrade.do",
 			type:"post",
 			data:formData,
-			beforeSend : function(xhr)
-			  {
-			   //이거 안하면 403 error
+			beforeSend : function(xhr){
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -410,7 +392,6 @@ window.onload = function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -464,8 +445,7 @@ window.onload = function(){
 
 					<form>
 					<input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
-						<h4>강의 조회</h4>
-						<br>
+						<br><h5>강의 조회</h5><br>
 						<div class="form-inline form-group">
 							<label class="h6 small d-block text-uppercase"> 년도 </label>
 							<div class="col-sm-3">
@@ -649,11 +629,9 @@ window.onload = function(){
 										</div>
 									</form>
 									<!-- End Hire Us Form -->
-
 								</div>
 								<div class="modal-footer">
-									<button type="button" class="btn btn-default"
-										data-dismiss="modal">닫기</button>
+									<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 								</div>
 							</div>
 						</div>

@@ -12,8 +12,7 @@
 
 <!-- Required Meta Tags Always Come First -->
 <meta charset="utf-8">
-<meta name="viewport"
-	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="_csrf_parameter" content="${_csrf.parameterName}" />
 <meta name="_csrf_header" content="${_csrf.headerName}" />
 <meta name="_csrf" content="${_csrf.token}" />
@@ -22,19 +21,31 @@
 <link rel="shortcut icon" href="../image/favicon.ico">
 
 <!-- Google Fonts -->
-<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700"
-	rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
 
 <!-- CSS Implementing Plugins -->
-  <link rel="stylesheet" href="../../assets/vendor/font-awesome/css/all.min.css">
-  <link rel="stylesheet" href="../../assets/vendor/hs-megamenu/src/hs.megamenu.css">
-  <link rel="stylesheet" href="../../assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
-  <link rel="stylesheet" href="../../assets/vendor/custombox/dist/custombox.min.css">
-  <link rel="stylesheet" href="../../assets/vendor/animate.css/animate.min.css">
+<link rel="stylesheet" href="../../assets/vendor/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="../../assets/vendor/hs-megamenu/src/hs.megamenu.css">
+<link rel="stylesheet" href="../../assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+<link rel="stylesheet" href="../../assets/vendor/custombox/dist/custombox.min.css">
+<link rel="stylesheet" href="../../assets/vendor/animate.css/animate.min.css">
  
-
 <!-- CSS Space Template -->
 <link rel="stylesheet" href="../../assets/css/theme.css">
+<style type="text/css">
+#image {
+	position:relative;
+	margin-left:28%;
+}
+
+#image #text {
+	position:absolute;
+	top:50%;
+	left:30%;
+	transform:translate(-50%,-50%);
+	width:700px;
+}
+</style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
 window.onload = function(){
@@ -56,27 +67,30 @@ window.onload = function(){
 	
 	/*프린트 출력 함수*/
 	submit.addEventListener("click",function(e){
-		$(".printScope").css("display","inline-block");
-		$("#printAreaTitle").css("display","inline-block");
-	//	document.getElementsByClassName("printScope").style="display:inline-block";
-	//	document.getElementById("printDetail").style.display="inline-block";
+		document.getElementsByClassName("printScope").style="display:inline-block";
+		document.getElementById("printAreaTitle").style="display:block"; 
+		document.getElementById("printAreaTitle").style="text-align:center";
+		document.getElementById("printAreaEnd").style="display:block"; 
+		document.getElementById("printAreaEnd").style="text-align:center";
 		document.body.innerHTML = printArea.innerHTML;
-		window.print();
-		$("#printAreaTitle").css("display","none");
-		location.reload();
+		setTimeout(function() {
+			window.print();
+			document.getElementById("printAreaTitle").style="display:none";
+			document.getElementById("printAreaEnd").style="display:none";
+			location.reload();
+        }, 300)
 	});
 
 	/*학년 학기 기준으로 구분하기 위해 detail이라는 class name을 붙이고 , 클릭시 detail함수 동작*/
 	const detailList = document.querySelectorAll(".detail");
 	console.log(detailList);
 	for(let i=0; i<detailList.length; i++){
-		detail(detailList[i],0); // 0을주면 테이블에달기
-		
+		detail(detailList[i],0); // 0을주면 테이블에 달기
 		detailList[i].addEventListener("click",function(e){
 			e.preventDefault();
-			detail(e.target,1); // 1을주면 밑에 상세에 달기
+			detail(e.target,1); // 1을주면 상세정보에 달기
 		})
-	}
+	};
 
 	/*년도와 학기를 매개변수로 ajax연결로 성적 상세정보를 가져온다*/
 	function detail(obj,check){
@@ -93,15 +107,6 @@ window.onload = function(){
 					"year":year, 
 					"semester":semester
 				},
-				/*beforeSend : function(xhr)
-				  {
-				   //이거 안하면 403 error
-				   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
-				   var token = $("#token");
-				   console.log($(token).attr("data"));
-				   console.log($(token).val());
-				   xhr.setRequestHeader($(token).attr("data"), $(token).val());
-				  },*/
 				success : function(dlist){
 					console.log(dlist);
 					if(check == 0 ){
@@ -154,7 +159,7 @@ window.onload = function(){
 		}
 	}
 	
-	/*성적 상세정보 담긴 동적노드 생성*/
+	/*구분의 학년-학기 클릭시 성적 상세정보 담긴 동적노드 생성*/
 	function setDlist(list){
 		tbody.innerHTML = '';
 		for(let i in list){
@@ -216,37 +221,58 @@ window.onload = function(){
 					<br>
 					<br>
 					<form action="listGrade.do" method="post">
-					<input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
+						<input type="hidden" id="token" data="${_csrf.headerName}"
+							value="${_csrf.token }">
 						<h4>년도·학기별</h4>
 						<span style="font-size: small;">* 구분항목 클릭시 해당 년도-학기의 성적
 							상세정보 열람 가능</span>
-							<div id="printArea">
-							<h4 id = "printAreaTitle" style="display:none;">전체학기 성적조회</h4>
-						<table class="table">
-							<thead class="thead-dark">
-								<tr>
-									<th scope="col">구분</th>
-									<th scope="col">학년</th>
-									<th scope="col">총 취득학점</th>
-									<th scope="col">평점평균</th>
-									<th scope="col">백분율</th>
-									<th></th>
-								</tr>
-							</thead>
-								<c:forEach var="g" items="${grade_list}" varStatus="idx" begin="0" step="1" >
-									<tr>
-										<th  scope="row"><a href='' class="detail" idx="${idx.index }"
-											style="font-weight: bold; color: blue;"
-											year="${g.grade_year }" semester="${g.grade_semester}">${g.grade_year }-${g.grade_semester}</a></th>
-										<td>${g.grade_level }</td>
-										<td>${g.sum_grade_regcredit }</td>
-										<td>${g.average_grade_getcredit }</td>
-										<td>${g.average_grade_score }</td>
-									</tr>
-							<tr id="tbody${idx.index}" class="printScope w-100" style="display:none;">
-							</tr>				
-								</c:forEach>
-						</table>
+						<div id="printArea">
+							<div id="printTable">
+								<div id="printAreaTitle"
+									style="display: none; text-align: center;">
+									<h2>전체학기 성적조회</h2>
+								</div>
+								<br>
+								<br>
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th scope="col">구분</th>
+											<th scope="col">학년</th>
+											<th scope="col">총 취득학점</th>
+											<th scope="col">평점평균</th>
+											<th scope="col">백분율</th>
+											<th></th>
+										</tr>
+									</thead>
+									<c:forEach var="g" items="${grade_list}" varStatus="idx"
+										begin="0" step="1">
+										<tr>
+											<th scope="row"><a href='' class="detail"
+												idx="${idx.index }" style="font-weight: bold; color: blue;"
+												year="${g.grade_year }" semester="${g.grade_semester}">${g.grade_year }-${g.grade_semester}</a></th>
+											<td>${g.grade_level }</td>
+											<td>${g.sum_grade_regcredit }</td>
+											<td>${g.average_grade_getcredit }</td>
+											<td>${g.average_grade_score }</td>
+										</tr>
+										<tr id="tbody${idx.index}" class="printScope w-100"
+											style="display: none;">
+										</tr>
+									</c:forEach>
+								</table>
+							</div>
+							<br>
+							<br>
+							<div id="printAreaEnd" style="display: none; text-align: center;">
+								<p>위의 사실을 증명함.</p>
+								<p>2020년 12월 1일</p>
+								<div id="image" style="text-align: center;">
+									<img src="../image/bitStamp.png" width="70px" height="70px">
+									<div id="text" style="font-size: 1.8em; font-weight: bold;">비
+										트 대 학 교 교 무 처 장</div>
+								</div>
+							</div>
 						</div>
 						<h4>상세정보</h4>
 						<table class="table">
@@ -260,7 +286,8 @@ window.onload = function(){
 									<th>등급</th>
 								</tr>
 							</thead>
-							<tbody id="tbody" class="mola" year="${g.grade_year }" semester="${g.grade_semester}">
+							<tbody id="tbody" class="mola" year="${g.grade_year }"
+								semester="${g.grade_semester}">
 							</tbody>
 						</table>
 					</form>
@@ -273,9 +300,9 @@ window.onload = function(){
 						</div>
 						<hr>
 						<!-- Categories -->
-							<!-- ========== schoolRegi_leftBar_Categories 삽입 ========== -->
-							<jsp:include page="../schoolRegi_leftBar_Categories.jsp"/>
-							<!-- ========== END schoolRegi_leftBar_Categories 삽입 ========== -->
+						<!-- ========== schoolRegi_leftBar_Categories 삽입 ========== -->
+						<jsp:include page="../schoolRegi_leftBar_Categories.jsp" />
+						<!-- ========== END schoolRegi_leftBar_Categories 삽입 ========== -->
 						<!-- End Categories -->
 					</div>
 				</div>
