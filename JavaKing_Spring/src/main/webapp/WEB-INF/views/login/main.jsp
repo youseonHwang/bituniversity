@@ -98,22 +98,30 @@
               }]'>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
-                <img class="mx-auto banners" src="../image/banner1.png" >
+	            <a href="/login/detailBoard.do?board_no=229">
+	              <img class="mx-auto banners" src="../image/banner1.png" >
+	            </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
-                <img class="mx-auto banners" src="../image/banner2.png" >
+              <a href="/login/detailBoard.do?board_no=227">
+               	<img class="mx-auto banners" src="../image/banner2.png" >
+              </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
+              <a href="/login/detailBoard.do?board_no=226">
                 <img class="mx-auto banners" src="../image/banner3.png">
+              </a>
               </div>
             </div>
             <div class="js-slide bg-img-hero-center">
               <div class="space-2-bottom">
+              <a href="/login/detailBoard.do?board_no=129">
                 <img class="mx-auto banners" src="../image/banner4.png">
+              </a>
               </div>
             </div>
           </div>
@@ -167,7 +175,11 @@
               			<hr class = "my-2">
              			<h5 class="h5 mb-0"><i class="far fa-id-card text-primary"></i>&nbsp;&nbsp;&nbsp;${std_no }</h5>
               			<hr class = "my-2">
-              			<h5 class="h5 mb-0 pb-1"><i class="fas fa-graduation-cap text-primary"></i>&nbsp;&nbsp;${major_name }<c:if test = "${acc_id !='관리자'}">과</c:if>&nbsp;${std_level}&nbsp;${std_semester }</h5>
+              			<h5 class="h5 mb-0 pb-1"><i class="fas fa-graduation-cap text-primary"></i>
+	              			&nbsp;&nbsp;${major_name }<c:if test = "${acc_id !='관리자'}">과</c:if>
+	              			&nbsp;${std_level}<c:if test = "${acc_id !='관리자'}">학년</c:if>
+	              			&nbsp;${std_semester }<c:if test = "${acc_id !='관리자'}">학기</c:if>
+              			</h5>
             		</div>
             		<div class="card-footer text-muted d-md-flex justify-content-between align-items-center mx-4 px-0">
               			<a class="d-flex align-items-center font-weight-bold" href="/login/studentInfo.do">

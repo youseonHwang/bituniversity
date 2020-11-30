@@ -26,6 +26,8 @@ public class ListBoardController {
 	@GetMapping("/login/listBoard.do") 
 	public void listBoardView(HttpServletRequest request, Model model) {
 		
+		HttpSession session = request.getSession();
+		
 		int board_boardno = 100;
 		String board_category = "공지사항";
 		
@@ -38,7 +40,13 @@ public class ListBoardController {
 				case 100: board_category = "공지사항"; break;
 				case 200: board_category = "시설QNA"; break;
 				case 300: board_category = "자유게시판"; break;
-			}	
+			}
+			
+			// 다른 게시판 선택했을 때 검색어session이 있다면 session파기
+			if(session.getAttribute("search") != null) {
+				session.removeAttribute("search");
+				session.removeAttribute("keyword");
+			}
 		}
 		
 		if((request.getParameter("board_category"))!=null && !(request.getParameter("board_category").equals(""))) {

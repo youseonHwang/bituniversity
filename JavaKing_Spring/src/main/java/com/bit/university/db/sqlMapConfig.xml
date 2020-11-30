@@ -4,6 +4,9 @@
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
   <properties resource="com/bit/university/db/db.properties"/>
+  <settings>
+  	<setting name="jdbcTypeForNull" value="NULL" />
+  </settings>
   <typeAliases>
   	<typeAlias type="com.bit.university.vo.StudentVo" alias="student_vo"/>
   	<typeAlias type="com.bit.university.vo.RegisterVo" alias="register_vo"/>
@@ -18,7 +21,6 @@
   	<typeAlias type="com.bit.university.vo.MajorVo" alias="major_vo"/>	
   	<typeAlias type="com.bit.university.vo.CalendarVo" alias="calendar_vo"/>
   	<typeAlias type="com.bit.university.vo.StudyVo" alias="study_vo"/>
-
   </typeAliases>
   <environments default="development">
     <environment id="development">

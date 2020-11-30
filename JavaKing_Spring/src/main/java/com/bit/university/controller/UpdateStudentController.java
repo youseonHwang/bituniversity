@@ -2,7 +2,6 @@ package com.bit.university.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.bit.university.dao.ChangeDao;
 import com.bit.university.dao.StudentDao;
@@ -24,7 +22,7 @@ import com.bit.university.vo.StudentVo;
 
 @Controller
 @RequestMapping("/login/updateStudentInfo.do")
-public class updateStudentController {
+public class UpdateStudentController {
 
 	@Autowired
 	private StudentDao dao;
@@ -46,14 +44,22 @@ public class updateStudentController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public String submit(@RequestParam(defaultValue = "0")String std_enddateCheck ,StudentVo sv4, HttpServletRequest request) {
-		ChangeVo cv = new ChangeVo();	
-		cv.setChange_no(cd.nextNum());
-		cv.setChange_year(Integer.parseInt((String.valueOf(sv4.getStd_startdate()).substring(0, 4))));
-		cv.setChange_semester(sv4.getStd_semester());
-		cv.setChange_level(sv4.getStd_level());
-		cv.setChange_sub(sv4.getStd_status());
-		cv.setStd_no(sv4.getStd_no());
-		cd.insert(cv);
+		HttpSession session = request.getSession();
+		int std_level = Integer.parseInt(session.getAttribute("std_level")+"");
+		int std_semester = Integer.parseInt(session.getAttribute("std_semester")+"");
+		if (!sv4.getStd_status().equals(session.getAttribute("std_status")) || sv4.getStd_level()!=std_level || sv4.getStd_semester()!= std_semester) {
+			ChangeVo cv = new ChangeVo();	
+			cv.setChange_no(cd.nextNum());
+			cv.setChange_year(Integer.parseInt((String.valueOf(sv4.getStd_startdate()).substring(0, 4))));
+			cv.setChange_semester(sv4.getStd_semester());
+			cv.setChange_level(sv4.getStd_level());
+			cv.setChange_sub(sv4.getStd_status());
+			cv.setStd_no(sv4.getStd_no());
+			cd.insert(cv);
+			session.setAttribute("std_level", sv4.getStd_level());
+			session.setAttribute("std_semester", sv4.getStd_semester());
+		}
+		
 		
 		
 		if(!std_enddateCheck.equals("0")) {
