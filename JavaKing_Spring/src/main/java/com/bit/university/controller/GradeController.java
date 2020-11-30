@@ -81,7 +81,6 @@ public class GradeController {
 		}
 		System.out.println(vo);
 		int re = dao.insert(vo);
-
 		return Integer.toString(re);
 	}
 	
@@ -104,11 +103,9 @@ public class GradeController {
 		else if(score>=70) {	vo.setGrade_rank("C");}
 		else if(score>=65) {	vo.setGrade_rank("D+");}
 		else if(score>=60) {	vo.setGrade_rank("D");}
-		else {	vo.setGrade_rank("F");}
-		
+		else {	vo.setGrade_rank("F");}		
 		System.out.println(vo);
-		int re = dao.update(vo);
-		
+		int re = dao.update(vo);		
 		return Integer.toString(re);
 	}
 	

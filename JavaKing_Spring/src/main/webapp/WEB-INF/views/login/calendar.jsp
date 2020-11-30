@@ -30,13 +30,12 @@
   <link rel="stylesheet" href="../../assets/css/theme.css">
   
 	
-  	<!-- FullCalendar -->
-   	<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  	<link href='../css/fullcalendar.min.css' rel='stylesheet' />
-	<script src='../js/moment.min.js'></script>
-	<script src='../js/fullcalendar.min.js'></script>
-	<script src='../js/ko.js'></script>
-	
+  <!-- FullCalendar -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <link href='../css/fullcalendar.min.css' rel='stylesheet' />
+  <script src='../js/moment.min.js'></script>
+  <script src='../js/fullcalendar.min.js'></script>
+  <script src='../js/ko.js'></script>
 <style type="text/css">
 .fc-day-sat {
 	color: #0000FF;
@@ -52,29 +51,10 @@
     background:#450e4c;
     border-radius: 5px;
 }
-
-.fc-event-title-container:hover {
-	position: relative;
-}
-.fc-event-title-container:hover:after {
-	content: ;
-
-    position: absolute;
-	bottom: 100%;
-	left: 0;
-    
-    background-color: rgba(0, 0, 0, 0.8);
-	color: #FFFFFF;
-	font-size: 12px;
-
-	z-index: 9999;
-}
-
 </style>
-
 <script>
+	/*시큐리티 토큰 설정*/
 	var csrf_token = "{{ csrf_token() }}";
-	
 	$.ajaxSetup({
 	    beforeSend: function(xhr, settings) {
 	        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -82,10 +62,10 @@
 	        }
 	    }
 	});
-	
+
+	/*캘린더 기본 설정*/
 	document.addEventListener('DOMContentLoaded', function() {
 		const eventsArr = [];
-		
 		$.ajax({
 			url : '/login/loadCalendar.do',
 			type : 'get',
@@ -114,9 +94,7 @@
 		});
 		console.log(eventsArr);
 		var calendarEl = document.getElementById('calendar');
-
 		var calendar = new FullCalendar.Calendar(calendarEl, {
-			
 			initialView : 'dayGridMonth',
 			headerToolbar : {
 				left : 'prev',
@@ -131,14 +109,13 @@
 			eventLimit : true,
 			eventLimitText : "more",
 			eventLimitClick : "popover",
-			editable : true, //드래그 수정가능
+			editable : true,
 			locale : 'ko'
 		});
 		calendar.render();	
 	});
 </script>
 </head>
-
 <body>
   <!-- Skippy -->
   <a id="skippy" class="sr-only sr-only-focusable u-skippy" href="#content">

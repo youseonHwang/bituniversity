@@ -72,9 +72,8 @@
 </style>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script>
-
+	/*시큐리티 토큰 설정*/
 	var csrf_token = "{{ csrf_token() }}";
-	
 	$.ajaxSetup({
 	    beforeSend: function(xhr, settings) {
 	        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
@@ -83,6 +82,7 @@
 	    }
 	});
 	
+	/*캘린더 기본 설정*/
 	document.addEventListener('DOMContentLoaded', function() {
 		const eventsArr = [];
 		$.ajax({
@@ -134,12 +134,8 @@
 			locale : 'ko'
 		});
 		calendar.render();
-
-
 	});
-	
 $(function(){
-	
 	/*-------------------------일정 등록--------------------------*/
     
 	/*일정 번호 자동생성 함수*/
@@ -152,7 +148,6 @@ $(function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -169,11 +164,6 @@ $(function(){
 		});
     };
 
-    /*일정 추가 버튼 클릭시 일정 번호 자동생성*/
-    $('#btnAdd').click(function(){
-		
-    });
-
 	/*모달창 내부에서 폼에 일정 입력 후 등록 버튼 클릭 시 ajax연결*/
 	$('#addGrade').click(function(){
 		const formData = new FormData(insertForm);
@@ -185,7 +175,6 @@ $(function(){
 			data:formData,
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -224,7 +213,6 @@ $(function(){
 		var end_date = $('#search_end_date').val();
 		console.log(start_date);
 		console.log(end_date);
-
 		$.ajax({
 			url : "/admin/searchCalendar.do",
 			type : "POST",
@@ -234,7 +222,6 @@ $(function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -274,10 +261,7 @@ $(function(){
 			$(tr).append(td1,td2,td3,td4,td5);
 			$("#clist").append(tr);
 		});
-		
 	};
-
-	$("")
 
 	/*선택한 일정의 정보를 ajax 연결해 update폼에 value 입력*/
 	$("#clist").on("click","tr",function(){
@@ -309,7 +293,6 @@ $(function(){
 			data:formData,
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -349,7 +332,6 @@ $(function(){
 			},
 			beforeSend : function(xhr)
 			  {
-			   //이거 안하면 403 error
 			   //데이터를 전송하기 전에 헤더에 csrf값을 설정한다
 			   var token = $("#token");
 			   console.log($(token).attr("data"));
@@ -371,320 +353,341 @@ $(function(){
 		})
 	});
 
+	/*모달창 내부에서 닫기 버튼 클릭시 창 새로고침*/
 	$('#cancel').click(function(){
 		$(location).attr('href','/admin/adminCalendar.do');
 	});
 });
 </script>
 </head>
-
 <body>
-  <!-- Skippy -->
-  <a id="skippy" class="sr-only sr-only-focusable u-skippy" href="#content">
-    <div class="container">
-      <span class="u-skiplink-text">Skip to main content</span>
-    </div>
-  </a>
-  <!-- End Skippy -->
+	<!-- Skippy -->
+	<a id="skippy" class="sr-only sr-only-focusable u-skippy"
+		href="#content">
+		<div class="container">
+			<span class="u-skiplink-text">Skip to main content</span>
+		</div>
+	</a>
+	<!-- End Skippy -->
 
- <!-- ========== HEADER ========== -->
-  <jsp:include page="../header.jsp"></jsp:include>
-  <!-- ========== END HEADER ========== -->
+	<!-- ========== HEADER ========== -->
+	<jsp:include page="../header.jsp"></jsp:include>
+	<!-- ========== END HEADER ========== -->
 
-  <!-- ========== MAIN CONTENT ========== -->
-  <main id="content">
-    <!-- Hero Section -->
-    <div class="hanna space-2 space-3-top--lg bg-primary text-white text-center text-weight-bold">
-      <h1 class = "h1 hanna">학사일정 관리</h1>
-    </div>
-    <!-- End Hero Section -->
+	<!-- ========== MAIN CONTENT ========== -->
+	<main id="content">
+		<!-- Hero Section -->
+		<div
+			class="hanna space-2 space-3-top--lg bg-primary text-white text-center text-weight-bold">
+			<h1 class="h1 hanna">학사일정 관리</h1>
+		</div>
+		<!-- End Hero Section -->
 
-    <!-- News Blog Content -->
-    <div class="container space-3-bottom--lg space-2-top">
-      <div class="row">
-        <div class="col-lg-9 order-lg-2 mb-9 mb-lg-0">
-       
-            
-		<!-- modal 구동 버튼 (trigger) --> 
-			<button type="button" id="btnAdd" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#addModal" class_no="0">일정 추가</button>
-	        <button type="button" id="btnDel" class="btn btn-xs btn-primary" data-toggle="modal" data-target="#delModal" class_no="0">일정 수정/삭제</button><br>	
-            <!-- 일정 등록 Modal -->
-			<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-			  <div class="modal-dialog modal-lg" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			      	<h4 class="modal-title" id="myModalLabel">일정 추가</h4>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			      </div>
-			      <div class="modal-body">
-			        <form class="js-validate" id="insertForm">
-			        <input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
-              <div class="row">
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      번호
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="text" id="no" name="no" value="${calendarNo }" required 
-                           readonly>
-                    </div>
-                  </div>
-                </div>
+		<!-- News Blog Content -->
+		<div class="container space-3-bottom--lg space-2-top">
+			<div class="row">
+				<div class="col-lg-9 order-lg-2 mb-9 mb-lg-0">
 
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      내용
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="text" id="title" name="title" required
-                            placeholder="일정 제목">
-                    </div>
-                  </div>
-                </div>
-            
-                <div class="w-100"></div>
-            
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      시작일
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" id="start_date" name="start_date" required
-                            placeholder="형식 : 2020-12-02">
-                    </div>
-                  </div>
-                </div>
+					<!-- modal 구동 버튼 (trigger) -->
+					<button type="button" id="btnAdd" class="btn btn-xs btn-primary"
+						data-toggle="modal" data-target="#addModal" class_no="0">일정
+						추가</button>
+					<button type="button" id="btnDel" class="btn btn-xs btn-primary"
+						data-toggle="modal" data-target="#delModal" class_no="0">일정
+						수정/삭제</button>
+					<br>
+					<!-- 일정 등록 Modal -->
+					<div class="modal fade" id="addModal" tabindex="-1" role="dialog"
+						aria-labelledby="myLargeModalLabel">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="myModalLabel">일정 추가</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+									<form class="js-validate" id="insertForm">
+										<input type="hidden" id="token" data="${_csrf.headerName}"
+											value="${_csrf.token }">
+										<div class="row">
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 번호
+														<span class="text-danger">*</span>
+													</label>
 
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      종료일
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" name="end_date" required
-                            placeholder="형식 : 2020-12-04">
-                    </div>
-                  </div>
-                </div>
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="text"
+															id="no" name="no" value="${calendarNo }" required
+															readonly>
+													</div>
+												</div>
+											</div>
 
-				<div class="col-sm-6 mb-6">
-				<label class="h6 small d-block text-uppercase">
-                      유형
-                    </label>
-                    <div class="col-sm-12">
-                      <select class="selectpicker form-control"  id="type" name="type">
-		          		<option disabled selected></option>
-						<option value="1">일반</option>
-						<option value="2">공휴일</option>
-						<option value="3">강조</option>
-					  </select>
-                    </div>
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 내용
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="text"
+															id="title" name="title" required placeholder="일정 제목">
+													</div>
+												</div>
+											</div>
+
+											<div class="w-100"></div>
+
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 시작일
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															id="start_date" name="start_date" required
+															placeholder="형식 : 2020-12-02">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 종료일
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															name="end_date" required placeholder="형식 : 2020-12-04">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-6 mb-6">
+												<label class="h6 small d-block text-uppercase"> 유형 </label>
+												<div class="col-sm-12">
+													<select class="selectpicker form-control" id="type"
+														name="type">
+														<option disabled selected></option>
+														<option value="1">일반</option>
+														<option value="2">공휴일</option>
+														<option value="3">강조</option>
+													</select>
+												</div>
+											</div>
+
+										</div>
+										<div class="text-center">
+											<button type="button" class="btn btn-primary btn-sm"
+												id="addGrade">등록</button>
+										</div>
+									</form>
+									<!-- End Hire Us Form -->
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal">닫기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Pagination -->
+					<!-- 일정 수정/삭제 Modal -->
+					<div class="modal fade" id="delModal" tabindex="-1" role="dialog"
+						aria-labelledby="myLargeModalLabel">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" id="myModalLabel">일정 수정/삭제</h4>
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<!-- --------------시작일,종료일로 캘린더 정보 조회하는 창-------------- -->
+									<hr>
+									<h5>일정 조회</h5>
+									<form>
+										<input type="hidden" id="token" data="${_csrf.headerName}"
+											value="${_csrf.token }">
+										<div class="form-inline form-group">
+											검색 범위&nbsp; : &nbsp;&nbsp;&nbsp;
+											<div class="col-sm-4 mb-4">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 시작일
+														<span class="text-danger"></span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															id="search_start_date" name="search_start_date" required
+															placeholder="형식 : 2020-12-02">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-4 mb-4">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 종료일
+														<span class="text-danger"></span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															id="search_end_date" name="search_end_date" required
+															placeholder="형식 : 2020-12-04">
+													</div>
+												</div>
+											</div>
+											&nbsp;&nbsp;
+											<button type="button" id="search"
+												class="btn btn-xs btn-primary">조회</button>
+										</div>
+									</form>
+									<!-- --------------캘린더 리스트 받아오기-------------- -->
+									<form class="js-validate" id="calendarForm">
+										<input type="hidden" id="token" data="${_csrf.headerName}"
+											value="${_csrf.token }">
+										<table class="table table-sm table-hover">
+											<thead>
+												<tr>
+													<th scope="col">번호</th>
+													<th scope="col">제목</th>
+													<th scope="col">시작일</th>
+													<th scope="col">종료일</th>
+													<th scope="col">유형</th>
+												</tr>
+											</thead>
+											<tbody id="clist">
+											</tbody>
+										</table>
+									</form>
+									<!-- --------------캘린더 리스트의 클릭한 정보 받아와 수정폼에 입력-------------- -->
+									<br>
+									<hr>
+									<h5>일정 수정/삭제</h5>
+									<br>
+									<form class="js-validate" id="updateForm">
+										<input type="hidden" id="token" data="${_csrf.headerName}"
+											value="${_csrf.token }">
+										<div class="row">
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 번호
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="text"
+															id="alter_no" name="no" required readonly>
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 내용
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="text"
+															id="alter_title" name="title" required
+															placeholder="일정 제목">
+													</div>
+												</div>
+											</div>
+
+											<div class="w-100"></div>
+
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 시작일
+														<span class="text-danger">*</span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															id="alter_start_date" name="start_date" required
+															placeholder="형식 : 2020-12-02">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-6 mb-6">
+												<div class="js-form-message">
+													<label class="h6 small d-block text-uppercase"> 종료일
+														<span class="text-danger">* </span>
+													</label>
+
+													<div class="js-focus-state input-group form">
+														<input class="form-control form__input" type="date"
+															id="alter_end_date" name="end_date" required
+															placeholder="형식 : 2020-12-04">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-sm-6 mb-6">
+												<label class="h6 small d-block text-uppercase"> 유형 </label>
+												<div class="col-sm-12">
+													<select class="selectpicker form-control" id="alter_type"
+														name="type">
+														<option disabled selected></option>
+														<option value="1">일반</option>
+														<option value="2">공휴일</option>
+														<option value="3">강조</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<div class="text-center">
+											<button type="button"
+												class="btn btn-primary btn-sm btn-primary" id="upGrade">수정</button>
+											<button type="button"
+												class="btn btn-primary btn-sm btn-primary" id="delGrade">삭제</button>
+										</div>
+									</form>
+									<!-- End Hire Us Form -->
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default"
+										data-dismiss="modal" id="cancel">닫기</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- End Pagination -->
+					<br>
+					<div id='calendar'></div>
+
+					<!-- End Pagination -->
 				</div>
-				
-				
-                
-              </div>  
-              <div class="text-center">
-                <button type="button" class="btn btn-primary btn-sm" id="addGrade">등록</button>
-              </div>
-            </form>
-<!-- End Hire Us Form -->
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-			      </div>
-			    </div>
-			  </div></div>
-          <!-- End Pagination -->
-          <!-- 일정 수정/삭제 Modal -->
-			<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
-			  <div class="modal-dialog modal-lg" role="document">
-			    <div class="modal-content">
-			      <div class="modal-header">
-			      	<h4 class="modal-title" id="myModalLabel">일정 수정/삭제</h4>
-			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-			      </div>
-			      <div class="modal-body">
-			      
-			<!-- --------------시작일,종료일로 캘린더 정보 조회하는 창-------------- -->
-			<hr>
-			<h5>일정 조회</h5>
-			<form>
-			<input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
-			<div class="form-inline form-group" >
-			검색 범위&nbsp; : &nbsp;&nbsp;&nbsp;
-			<div class="col-sm-4 mb-4">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      시작일
-                      <span class="text-danger"></span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" id="search_start_date" name="search_start_date" required
-                            placeholder="형식 : 2020-12-02">
-                    </div>
-                  </div>
-                </div>
 
-                <div class="col-sm-4 mb-4">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      종료일
-                      <span class="text-danger"></span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" id="search_end_date" name="search_end_date" required
-                            placeholder="형식 : 2020-12-04">
-                    </div>
-                  </div>
-                </div> &nbsp;&nbsp;
-			<button type="button" id="search" class="btn btn-xs primary">조회</button>
+				<div class="col-lg-3 order-lg-1">
+					<div class="portlet light profile-sidebar-portlet bordered">
+						<div class="card-body user-profile-card mb-3">
+							<!--     <img src="../upload/${sv.std_fname }" class="user-profile-image rounded-circle" alt="" width="160" height="160"/>  -->
+						</div>
+						<!-- Categories -->
+						<!-- ========== schoolRegi_leftBar_Categories 삽입 ========== -->
+						<jsp:include page="../admin_leftBar_Categories.jsp" />
+						<!-- ========== END schoolRegi_leftBar_Categories 삽입 ========== -->
+						<!-- End Categories -->
+					</div>
+				</div>
 			</div>
-			</form>
-			<!-- --------------캘린더 리스트 받아오기-------------- -->
-			<form class="js-validate" id="calendarForm">
-			<input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
-              <table class="table table-sm table-hover">
-				<thead>
-					<tr>
-						<th scope="col">번호</th>
-						<th scope="col">제목</th>
-						<th scope="col">시작일</th>
-						<th scope="col">종료일</th>
-						<th scope="col">유형</th>
-					</tr>
-				</thead>
-				<tbody id="clist">
-				</tbody>
-			</table>
-            </form>
-			<!-- --------------캘린더 리스트의 클릭한 정보 받아와 수정폼에 입력-------------- -->
-			<br><hr>
-			<h5>일정 수정/삭제</h5><br>
-			<form class="js-validate" id="updateForm">
-			<input type="hidden" id="token" data="${_csrf.headerName}" value="${_csrf.token }">
-              <div class="row">
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      번호
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="text" id="alter_no" name="no" required
-                            readonly>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      내용
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="text" id="alter_title" name="title" required
-                            placeholder="일정 제목">
-                    </div>
-                  </div>
-                </div>
-            
-                <div class="w-100"></div>
-            
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      시작일
-                      <span class="text-danger">*</span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" id="alter_start_date" name="start_date" required
-                            placeholder="형식 : 2020-12-02">
-                    </div>
-                  </div>
-                </div>
-
-                <div class="col-sm-6 mb-6">
-                  <div class="js-form-message">
-                    <label class="h6 small d-block text-uppercase">
-                      종료일
-                      <span class="text-danger">* </span>
-                    </label>
-            
-                    <div class="js-focus-state input-group form">
-                      <input class="form-control form__input" type="date" id="alter_end_date" name="end_date" required
-                            placeholder="형식 : 2020-12-04">
-                    </div>
-                  </div>
-                </div>
-
-				<div class="col-sm-6 mb-6">
-				<label class="h6 small d-block text-uppercase">
-                      유형
-                    </label>
-                    <div class="col-sm-12">
-                      <select class="selectpicker form-control" id="alter_type" name="type">
-		          		<option disabled selected></option>
-						<option value="1">일반</option>
-						<option value="2">공휴일</option>
-						<option value="3">강조</option>
-					  </select>
-                    </div>
-				</div>
-				
-                
-              </div>  
-              <div class="text-center">
-                <button type="button" class="btn btn-primary btn-sm btn-primary" id="upGrade">수정</button>
-                <button type="button" class="btn btn-primary btn-sm btn-primary" id="delGrade">삭제</button>
-              </div>
-            </form>
-<!-- End Hire Us Form -->
-			      </div>
-			      <div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal" id="cancel">닫기</button>
-			      </div>
-			    </div>
-			  </div></div>
-          <!-- End Pagination -->
-		<br><div id='calendar'></div>
-         
-          <!-- End Pagination -->
-        </div>
-
-        <div class="col-lg-3 order-lg-1">
-          <div class="portlet light profile-sidebar-portlet bordered">
-            <div class="card-body user-profile-card mb-3">
-         <!--     <img src="../upload/${sv.std_fname }" class="user-profile-image rounded-circle" alt="" width="160" height="160"/>  -->
-          </div>
-          <!-- Categories -->
-          <!-- ========== schoolRegi_leftBar_Categories 삽입 ========== -->
-		  <jsp:include page="../admin_leftBar_Categories.jsp"/>
-		  <!-- ========== END schoolRegi_leftBar_Categories 삽입 ========== -->
-          <!-- End Categories -->
-        </div>
-      </div>
-    </div>
-    <!-- End News Blog Content -->
-  </main>
-  <!-- ========== END MAIN CONTENT ========== -->
+			<!-- End News Blog Content -->
+	</main>
+	<!-- ========== END MAIN CONTENT ========== -->
 
   <!-- ========== FOOTER ========== -->
   <jsp:include page="../footer.jsp"></jsp:include>
