@@ -8,7 +8,7 @@
 황유선 <br />
 - 메일 주소 : dbtjs0221@gmail.com <br />
 - 데모 영상 및 팀 프로젝트 PPT : https://docs.google.com/presentation/d/143Vw4rlDR7mVIrAFRxZADHyeN55RHV19h0OrsXrmPX0/edit?usp=sharing <br />
-- 개인 포트폴리오 PPT : https://drive.google.com/file/d/15RCHt1h4tGhvZxtrMpVOzCDcNOB3eVzN/view?usp=sharing <br />
+//- 개인 포트폴리오 PPT : https://drive.google.com/file/d/15RCHt1h4tGhvZxtrMpVOzCDcNOB3eVzN/view?usp=sharing <br />
 
 
 
